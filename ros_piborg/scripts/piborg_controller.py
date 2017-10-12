@@ -52,8 +52,15 @@ class PiBorg(object):
     def __update_twist(self, msg):
         print("Linear: {0} Angular: {{1}".format(msg.linear.x, msg.angular.z))
         # Set the motors to the new speeds
-        # self.__pbr.SetMotor1(driveRight * maxPower)
-        # self.__pbr.SetMotor2(-driveLeft * maxPower)
+
+        linear = msg.linear.x / 1.5
+        angular = msg.angular.z / 0.4
+
+        driveRight = linear
+        driveLeft = -linear
+
+        self.__pbr.SetMotor1(driveRight * self.__maxPower)
+        self.__pbr.SetMotor2(driveLeft * self.__maxPower)
 
     def start(self):
         rospy.Subscriber('/cmd_vel', Twist, self.__update_twist)
