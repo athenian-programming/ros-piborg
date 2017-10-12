@@ -12,6 +12,7 @@ class PiBorg(object):
     # Power settings
     __voltageIn = 12.0  # Total battery voltage to the PicoBorg Reverse
     __voltageOut = 6.0  # Maximum motor voltage
+
     # Setup the power limits
     __maxPower = 1.0 if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
 
@@ -50,17 +51,43 @@ class PiBorg(object):
         self.__pbr.SetLed(False)
 
     def __update_twist(self, msg):
-        print("Linear: {0} Angular: {{1}".format(msg.linear.x, msg.angular.z))
         # Set the motors to the new speeds
 
-        linear = msg.linear.x / 1.5
-        angular = msg.angular.z / 0.4
+        max_linear = 1.5
+        max_angular = 0.4
+
+        linear = msg.linear.x / max_linear
+        angular = msg.angular.z / max_angular
 
         driveRight = linear
-        driveLeft = -linear
+        driveLeft = linear
+
+        # Turn left
+        if angular > 0.01:
+            if driveLeft > 0.01:
+                driveLeft = driveLeft - (driveLeft * angular)
+            elif driveLeft < -0.01:
+                driveLeft = driveLeft - (driveLeft * angular)
+            else:
+                driveRight = max_linear * angular
+                driveLeft = max_linear * -angular
+
+            
+        # Turn Right
+        if angular < -0.01:
+            if driveRight > 0.01:
+                driveRight = driveRight - (driveRight * -angular)
+            elif driveRight < -0.01:
+                driveRight = driveRight - (driveRight * -angular)
+            else:
+                driveRight = max_linear * angular
+                driveLeft = max_linear * -angular
+            
+
+        print("Linear: {0} Angular: {1}".format(linear, angular))
 
         self.__pbr.SetMotor1(driveRight * self.__maxPower)
-        self.__pbr.SetMotor2(driveLeft * self.__maxPower)
+        self.__pbr.SetMotor2(-driveLeft * self.__maxPower)
 
     def start(self):
         rospy.Subscriber('/cmd_vel', Twist, self.__update_twist)
@@ -76,5 +103,6 @@ if __name__ == '__main__':
 
     try:
         pb.start()
+        rospy.spin()
     finally:
         pb.stop()
