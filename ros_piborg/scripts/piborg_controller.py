@@ -14,9 +14,13 @@ class PiBorg(object):
     __voltageOut = 6.0  # Maximum motor voltage
 
     # Setup the power limits
-    __maxPower = 1.0 #if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
+    __maxPower = 1.0  # if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
 
     def __init__(self):
+
+        self.__max_linear = float(rospy.get_param('max_linear', '1.5'))
+        self.__max_angular = float(rospy.get_param('max_angular', '0.4'))
+        self.__zero_slop = float(rospy.get_param('zero_slop', '0.01'))
 
         self.__pbr = PicoBorgRev.PicoBorgRev()
         # self.__pbr.i2cAddress = 0x44        # Uncomment and change the value if you have changed the board address
@@ -52,40 +56,35 @@ class PiBorg(object):
 
     def __update_twist(self, msg):
         # Set the motors to the new speeds
-
-        max_linear = 1.5
-        max_angular = 0.4
-        zero_slop = 0.01
-
-        linear = msg.linear.x / max_linear
-        angular = msg.angular.z / max_angular
+        linear = msg.linear.x / self.__max_linear
+        angular = msg.angular.z / self.__max_angular
 
         right = linear
         left = linear
 
         # Turn left
-        if angular > zero_slop:
-            if left > zero_slop:
+        if angular > self.__zero_slop:
+            if left > self.__zero_slop:
                 left = left - (left * angular)
-            elif left < -zero_slop:
+            elif left < -self.__zero_slop:
                 left = left - (left * angular)
             else:
                 # Tank turn left in place
-                right = max_linear * angular
-                left = max_linear * -angular
+                right = self.__max_linear * angular
+                left = self.__max_linear * -angular
 
         # Turn Right
-        if angular < -zero_slop:
-            if right > zero_slop:
+        if angular < -self.__zero_slop:
+            if right > self.__zero_slop:
                 right = right - (right * -angular)
-            elif right < -zero_slop:
+            elif right < -self.__zero_slop:
                 right = right - (right * -angular)
             else:
                 # Tank turn right in place
-                right = max_linear * angular
-                left = max_linear * -angular
+                right = self.__max_linear * angular
+                left = self.__max_linear * -angular
 
-        #print("Lin: {0} Ang: {1} L: {2} R: {3} P: {4}".format(linear, angular, left, right, self.__maxPower))
+        # print("Lin: {0} Ang: {1} L: {2} R: {3} P: {4}".format(linear, angular, left, right, self.__maxPower))
 
         self.__pbr.SetMotor1(right * self.__maxPower)
         self.__pbr.SetMotor2(-left * self.__maxPower)
