@@ -55,39 +55,38 @@ class PiBorg(object):
 
         max_linear = 1.5
         max_angular = 0.4
+        zero_slop = 0.01
 
         linear = msg.linear.x / max_linear
         angular = msg.angular.z / max_angular
 
-        driveRight = linear
-        driveLeft = linear
+        right = linear
+        left = linear
 
         # Turn left
-        if angular > 0.01:
-            if driveLeft > 0.01:
-                driveLeft = driveLeft - (driveLeft * angular)
-            elif driveLeft < -0.01:
-                driveLeft = driveLeft - (driveLeft * angular)
+        if angular > zero_slop:
+            if left > zero_slop:
+                left = left - (left * angular)
+            elif left < -zero_slop:
+                left = left - (left * angular)
             else:
-                driveRight = max_linear * angular
-                driveLeft = max_linear * -angular
+                right = max_linear * angular
+                left = max_linear * -angular
 
-            
         # Turn Right
-        if angular < -0.01:
-            if driveRight > 0.01:
-                driveRight = driveRight - (driveRight * -angular)
-            elif driveRight < -0.01:
-                driveRight = driveRight - (driveRight * -angular)
+        if angular < -zero_slop:
+            if right > zero_slop:
+                right = right - (right * -angular)
+            elif right < -zero_slop:
+                right = right - (right * -angular)
             else:
-                driveRight = max_linear * angular
-                driveLeft = max_linear * -angular
-            
+                right = max_linear * angular
+                left = max_linear * -angular
 
-        print("Linear: {0} Angular: {1}".format(linear, angular))
+        print("Lin: {0} Ang: {1} L: {2} R: {3} P: {4}".format(linear, angular, left, right, self.__maxPower))
 
-        self.__pbr.SetMotor1(driveRight * self.__maxPower)
-        self.__pbr.SetMotor2(-driveLeft * self.__maxPower)
+        self.__pbr.SetMotor1(right * self.__maxPower)
+        self.__pbr.SetMotor2(-left * self.__maxPower)
 
     def start(self):
         rospy.Subscriber('/cmd_vel', Twist, self.__update_twist)
