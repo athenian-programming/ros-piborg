@@ -14,7 +14,7 @@ class PiBorg(object):
     __voltageOut = 6.0  # Maximum motor voltage
 
     # Setup the power limits
-    __maxPower = 1.0 if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
+    __maxPower = 1.0 #if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
 
     def __init__(self):
 
@@ -70,6 +70,7 @@ class PiBorg(object):
             elif left < -zero_slop:
                 left = left - (left * angular)
             else:
+                # Tank turn left in place
                 right = max_linear * angular
                 left = max_linear * -angular
 
@@ -80,10 +81,11 @@ class PiBorg(object):
             elif right < -zero_slop:
                 right = right - (right * -angular)
             else:
+                # Tank turn right in place
                 right = max_linear * angular
                 left = max_linear * -angular
 
-        print("Lin: {0} Ang: {1} L: {2} R: {3} P: {4}".format(linear, angular, left, right, self.__maxPower))
+        #print("Lin: {0} Ang: {1} L: {2} R: {3} P: {4}".format(linear, angular, left, right, self.__maxPower))
 
         self.__pbr.SetMotor1(right * self.__maxPower)
         self.__pbr.SetMotor2(-left * self.__maxPower)
