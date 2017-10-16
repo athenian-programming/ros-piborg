@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import cv2
-import rospy
-from sensor_msgs.msg import CompressedImage
-from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
+import cv2
+import rospy
+from sensor_msgs.msg import CameraInfo
+from sensor_msgs.msg import CompressedImage
+from sensor_msgs.msg import Image
 
 
 def flip(image):
@@ -17,7 +18,7 @@ def flip(image):
     return img
 
 def update_image(msg):
-    global pub
+    global img_pub
     global bridge
     format = msg.format
     image = msg.data
@@ -26,14 +27,21 @@ def update_image(msg):
     try:
         # Convert your ROS Image message to OpenCV2
         cv2_img = bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
-    except CvBridgeError, e:
+
+        new_image = flip(cv2_img)
+
+        # pub.publish(bridge.cv2_to_compressed_imgmsg(new_image, "jpg"))
+        img_pub.publish(bridge.cv2_to_imgmsg(new_image, "bgr8"))
+    except CvBridgeError as e:
         print(e)
 
-    new_image = flip(cv2_img)
+
+def update_info(msg):
+    global info_pub
 
     try:
         # pub.publish(bridge.cv2_to_compressed_imgmsg(new_image, "jpg"))
-        pub.publish(bridge.cv2_to_imgmsg(new_image, "bgr8"))
+        info_pub.publish(msg)
     except CvBridgeError as e:
         print(e)
 
@@ -45,7 +53,9 @@ if __name__ == '__main__':
     bridge = CvBridge()
 
     rospy.Subscriber('/raspicam_node/image_raw/compressed', CompressedImage, update_image)
-    #pub = rospy.Publisher('/test_img/image_raw', CompressedImage, queue_size=5)
-    pub = rospy.Publisher('/test_img/image_raw', Image, queue_size=5)
+    rospy.Subscriber('/raspicam_node/camera_info', CameraInfo, update_info)
+    # img_pub = rospy.Publisher('/test_img/image_raw', CompressedImage, queue_size=5)
+    img_pub = rospy.Publisher('/test_img/image_raw', Image, queue_size=5)
+    info_pub = rospy.Publisher('/test_img/camera_info', CameraInfo, queue_size=5)
 
     rospy.spin()
