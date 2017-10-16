@@ -44,8 +44,8 @@ if __name__ == '__main__':
     # Instantiate CvBridge
     bridge = CvBridge()
 
-    rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, update_image)
-    #pub = rospy.Publisher('/test_img', CompressedImage, queue_size=5)
-    pub = rospy.Publisher('/test_img', Image, queue_size=5)
+    rospy.Subscriber('/raspicam_node/image_raw/compressed', CompressedImage, update_image)
+    #pub = rospy.Publisher('/test_img/image_raw', CompressedImage, queue_size=5)
+    pub = rospy.Publisher('/test_img/image_raw', Image, queue_size=5)
 
     rospy.spin()
