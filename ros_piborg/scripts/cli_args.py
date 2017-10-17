@@ -22,7 +22,7 @@ def setup_cli_args(*args):
 
 
 def bgr(p):
-    return p.add_argument("--bgr", "--bgr_color", dest=BGR_COLOR, required=True,
+    return p.add_argument("--bgr", "--bgr_color", dest=BGR_COLOR,  # required=True,
                           help="BGR target value, e.g., -b \"174, 56, 5\"")
 
 
@@ -91,7 +91,7 @@ def draw_box(p):
 
 
 def display(p):
-    return p.add_argument("--display", dest=DISPLAY, default=False, action="store_true", help="Display image [false]")
+    return p.add_argument("--display", dest=DISPLAY, default=True, action="store_true", help="Display image [false]")
 
 
 def serial_port(p):
