@@ -3,6 +3,7 @@
 import logging
 
 import cv2
+import rospy
 
 import opencv_defaults as defs
 from cli_args import LOG_LEVEL
@@ -122,4 +123,4 @@ if __name__ == "__main__":
     finally:
         tracker.stop()
 
-    logger.info("Exiting...")
+    rospy.loginfo("Exiting...")

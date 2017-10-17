@@ -4,7 +4,7 @@ import logging
 from constants import CAMERA_NAME, CAMERA_NAME_DEFAULT, MQTT_HOST, SERIAL_PORT, BAUD_RATE, HTTP_HOST, USB_PORT, \
     OOR_SIZE, \
     OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
-from constants import DEVICE_ID, LED_NAME, LED_BRIGHTNESS_DEFAULT, LED_BRIGHTNESS, VERTICAL_LINES, HORIZONTAL_LINES
+from constants import DEVICE_ID, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import DRAW_CONTOUR, DRAW_BOX
 from constants import HSV_RANGE, WIDTH, USB_CAMERA, BGR_COLOR, MIDDLE_PERCENT, FLIP_X, FLIP_Y
 from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD, MQTT_TOPIC
@@ -106,15 +106,6 @@ def baud_rate(p):
 
 def device_id(p):
     return p.add_argument("--did", "--device_id", dest=DEVICE_ID, help="USB device ID")
-
-
-def led_name(p):
-    return p.add_argument("--led", "--led_name", dest=LED_NAME, required=True, help="LED name")
-
-
-def led_brightness(p):
-    return p.add_argument("--brightness", "--led_brightness", dest=LED_BRIGHTNESS, default=LED_BRIGHTNESS_DEFAULT,
-                          help="LED brightness [{0}]".format(LED_BRIGHTNESS_DEFAULT))
 
 
 def camera_name(p):

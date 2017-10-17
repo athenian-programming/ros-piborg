@@ -4,6 +4,7 @@ from threading import Lock
 from threading import Thread
 
 import requests
+import rospy
 from flask import Flask
 from flask import redirect
 from flask import request
@@ -76,7 +77,7 @@ class ImageServer(object):
             return
 
         if not self.started:
-            logger.error("ImageServer.start() not called")
+            rospy.logerr("ImageServer.start() not called")
             return
 
         if not self.__flask_launched:
@@ -132,7 +133,7 @@ class ImageServer(object):
                     .replace("_HEIGHT_", str(height)) \
                     .replace("_IMAGE_FNAME_", _image_fname)
             except BaseException as e:
-                logger.error("Unable to create template file with %s [%s]", self.__http_file, e, exc_info=True)
+                rospy.logerr("Unable to create template file with %s [%s]", self.__http_file, e, exc_info=True)
                 time.sleep(1)
 
         def run_http(flask_server, host, port):
@@ -140,27 +141,27 @@ class ImageServer(object):
                 try:
                     flask_server.run(host=host, port=port)
                 except BaseException as e:
-                    logger.error("Restarting HTTP server [%s]", e, exc_info=True)
+                    rospy.logerr("Restarting HTTP server [%s]", e, exc_info=True)
                     time.sleep(1)
                 finally:
-                    logger.info("HTTP server shutdown")
+                    rospy.loginfo("HTTP server shutdown")
 
         # Run HTTP server in a thread
         Thread(target=run_http, kwargs={"flask_server": flask, "host": self.__host, "port": self.__port}).start()
         self.__flask_launched = True
-        logger.info("Running HTTP server on http://%s:%s/", self.__host, self.__port)
+        rospy.loginfo("Running HTTP server on http://%s:%s/", self.__host, self.__port)
 
     def _start(self):
         # Cannot start the flask server until the dimensions of the image are known
         # So do not fire up the thread until the first image is available
-        logger.info("Using template file %s", self.__http_file)
-        logger.info("Starting HTTP server on http://%s:%s/", self.__host, self.__port)
+        rospy.loginfo("Using template file %s", self.__http_file)
+        rospy.loginfo("Starting HTTP server on http://%s:%s/", self.__host, self.__port)
         self.__ready_to_serve = True
         self.started = True
 
     def start(self):
         if self.started:
-            logger.error("ImageServer.start() already called")
+            rospy.logerr("ImageServer.start() already called")
             return
 
         if self.__flask_launched or not self.enabled:
@@ -174,9 +175,9 @@ class ImageServer(object):
 
         self.__ready_to_stop = True
         url = "http://{0}:{1}".format(self.__host, self.__port)
-        logger.info("Shutting down %s", url)
+        rospy.loginfo("Shutting down %s", url)
 
         try:
             requests.post("{0}/__shutdown__".format(url))
         except requests.exceptions.ConnectionError:
-            logger.error("Unable to stop ImageServer")
+            rospy.logerr("Unable to stop ImageServer")

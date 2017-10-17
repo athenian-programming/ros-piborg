@@ -105,16 +105,16 @@ class ColorPicker(object):
             size = int(self.width * 0.20)
             cv2_img[self.height - size:self.height, self.width - size:self.width] = avg_color
 
-            self.cnt += 1
-
             if self.__image_server.enabled and self.cnt % 30 == 0:
-                logger.info(self.bgr_text)
+                rospy.loginfo(self.bgr_text)
 
             self.__image = cv2_img
             self.__image_server.image = cv2_img
 
+            self.cnt += 1
+
         except BaseException as e:
-            logger.error("Unexpected error in main loop [{0}]".format(e), exc_info=True)
+            rospy.logerr("Unexpected error in main loop [{0}]".format(e), exc_info=True)
             time.sleep(1)
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread
@@ -197,4 +197,4 @@ if __name__ == "__main__":
     finally:
         color_picker.stop()
 
-    logger.info("Exiting...")
+    rospy.loginfo("Exiting...")

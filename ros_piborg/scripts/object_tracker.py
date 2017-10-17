@@ -127,7 +127,7 @@ class ObjectTracker(object):
         except KeyboardInterrupt as e:
             raise e
         except BaseException as e:
-            logger.error("Unexpected error in main loop [{0}]".format(e), exc_info=True)
+            rospy.logerr("Unexpected error in main loop [{0}]".format(e), exc_info=True)
             time.sleep(1)
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread

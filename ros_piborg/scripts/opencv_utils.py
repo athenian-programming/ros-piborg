@@ -3,6 +3,7 @@ import logging
 import math
 
 import cv2
+import rospy
 
 RED = (0, 0, 255)
 GREEN = (0, 255, 0)
@@ -24,7 +25,7 @@ def write_image(frame, file_name=None, log_info=False):
     fname = file_name if file_name else "ct-{0}.png".format(datetime.datetime.now().strftime("%H-%M-%S"))
     cv2.imwrite(file_name, frame)
     if log_info:
-        logger.info("Wrote image to %s", fname)
+        rospy.loginfo("Wrote image to %s", fname)
 
 
 def encode_image(frame, ext=".jpg"):
