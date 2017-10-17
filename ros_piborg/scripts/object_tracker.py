@@ -1,11 +1,11 @@
 import logging
+import numpy as np
 import time
+from cv_bridge import CvBridge
 
 import cv2
 import imutils
-import numpy as np
 import rospy
-from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage
 
 import cli_args  as cli
@@ -88,7 +88,7 @@ class ObjectTracker(object):
 
     def __read_image(self, msg):
         try:
-            cv2_img = bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
+            cv2_img = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
 
             cv2_img = imutils.resize(cv2_img, width=self.width)
             cv2_img = self.flip(cv2_img)
@@ -132,6 +132,7 @@ class ObjectTracker(object):
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread
     def start(self, *filters):
+
         self.__filters = filters
 
         if self.__filters:
@@ -140,13 +141,14 @@ class ObjectTracker(object):
 
         self.image_server.start()
 
-        rospy.Subscriber('/raspicam_node/image_raw/compressed', CompressedImage, self.__read_image)
+        rospy.init_node('object_tracker')
+        rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, self.__read_image)
 
-        while True:
+        while not self.stopped:
             if self.__image is not None:
                 self.display_image(self.__image)
             else:
-                time.sleep(0.1)
+                rospy.sleep(0.1)
 
     def stop(self):
         self.stopped = True

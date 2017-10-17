@@ -6,7 +6,7 @@ import cv2
 
 import opencv_defaults as defs
 from cli_args import LOG_LEVEL
-from constants import DISPLAY, BGR_COLOR, WIDTH, MIDDLE_PERCENT, FLIP_X
+from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
 from constants import DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
 from constants import MASK_X, MASK_Y, USB_PORT
@@ -45,7 +45,7 @@ class SingleObjectFilter(GenericFilter):
     def publish_data(self):
         # Write location if it is different from previous value written
         if self.img_x != self.prev_x or self.img_y != self.prev_y:
-            self.location_server.write_location(self.img_x, self.img_y, self.width, self.height, self.middle_inc)
+            # self.location_server.write_location(self.img_x, self.img_y, self.width, self.height, self.middle_inc)
             self.prev_x, self.prev_y = self.img_x, self.img_y
 
     def markup_image(self, image):
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     tracker = ObjectTracker(width=args[WIDTH],
                             middle_percent=args[MIDDLE_PERCENT],
                             display=args[DISPLAY],
-                            flip_x=args[FLIP_X],
+                            flip_x=True,  #args[FLIP_X],
                             flip_y=args[FLIP_Y],
                             mask_x=args[MASK_X],
                             mask_y=args[MASK_Y],
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                             http_verbose=args[HTTP_VERBOSE])
 
     obj_filter = SingleObjectFilter(tracker,
-                                    bgr_color=args[BGR_COLOR],
+                                    bgr_color="174, 56, 5",  #args[BGR_COLOR],
                                     hsv_range=args[HSV_RANGE],
                                     minimum_pixels=args[MINIMUM_PIXELS],
                                     display_text=True,
