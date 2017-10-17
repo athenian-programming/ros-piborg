@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-from cv_bridge import CvBridge, CvBridgeError
-
 import cv2
 import rospy
+from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import CameraInfo
 from sensor_msgs.msg import CompressedImage
 from sensor_msgs.msg import Image
@@ -54,8 +53,10 @@ if __name__ == '__main__':
 
     rospy.Subscriber('/raspicam_node/image_raw/compressed', CompressedImage, update_image)
     rospy.Subscriber('/raspicam_node/camera_info', CameraInfo, update_info)
+
     # img_pub = rospy.Publisher('/test_img/image_raw', CompressedImage, queue_size=5)
     img_pub = rospy.Publisher('/test_img/image_raw', Image, queue_size=5)
+
     info_pub = rospy.Publisher('/test_img/camera_info', CameraInfo, queue_size=5)
 
     rospy.spin()
