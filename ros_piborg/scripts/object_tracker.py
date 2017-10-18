@@ -5,13 +5,10 @@ import cv2
 import imutils
 import numpy as np
 import rospy
-from cv_bridge import CvBridge
-from sensor_msgs.msg import CompressedImage
 
 import cli_args  as cli
 import opencv_utils as utils
 from cli_args import setup_cli_args
-from image_server import ImageServer
 
 logger = logging.getLogger(__name__)
 
@@ -20,20 +17,17 @@ BLACK = np.uint8((0, 0, 0))
 
 class ObjectTracker(object):
     def __init__(self,
+                 image_source,
+                 image_server,
                  width,
                  middle_percent,
                  display,
                  flip_x,
                  flip_y,
                  mask_x,
-                 mask_y,
-                 usb_camera,
-                 usb_port,
-                 camera_name,
-                 http_host,
-                 http_file,
-                 http_delay_secs,
-                 http_verbose):
+                 mask_y):
+        self.__image_source = image_source
+        self.__image_server = image_server
         self.__width = width
         self.__middle_percent = middle_percent
         self.__orig_width = width
@@ -46,17 +40,8 @@ class ObjectTracker(object):
         self.__filters = None
 
         self.__image = None
-        self.stopped = False
-        self.cnt = 0
-
-        # Instantiate CvBridge
-        self.bridge = CvBridge()
-
-        self.image_server = ImageServer(http_file,
-                                        camera_name=camera_name,
-                                        http_host=http_host,
-                                        http_delay_secs=http_delay_secs,
-                                        http_verbose=http_verbose)
+        self.__stopped = False
+        self.__cnt = 0
 
     @property
     def width(self):
@@ -84,14 +69,19 @@ class ObjectTracker(object):
 
     @property
     def markup_image(self):
-        return self.__display or self.image_server.enabled
+        return self.__display or self.__image_server.enabled
 
-    def __read_image(self, msg):
+    def __read_image(self):
         try:
-            cv2_img = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
+            cv2_img = self.__image_source.get_image()
 
             cv2_img = imutils.resize(cv2_img, width=self.width)
-            cv2_img = self.flip(cv2_img)
+
+            if self.__flip_x:
+                cv2_img = cv2.flip(cv2_img, 0)
+
+            if self.__flip_y:
+                cv2_img = cv2.flip(cv2_img, 1)
 
             # Apply masks
             if self.__mask_y != 0:
@@ -119,10 +109,10 @@ class ObjectTracker(object):
                     f.publish_data()
                     f.markup_image(cv2_img)
 
-            self.image_server.image = cv2_img
+            self.__image_server.image = cv2_img
             self.__image = cv2_img
 
-            self.cnt += 1
+            self.__cnt += 1
 
         except KeyboardInterrupt as e:
             raise e
@@ -131,7 +121,7 @@ class ObjectTracker(object):
             time.sleep(1)
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread
-    def start(self, *filters):
+    def run(self, *filters):
 
         self.__filters = filters
 
@@ -139,25 +129,16 @@ class ObjectTracker(object):
             for f in self.__filters:
                 f.start()
 
-        self.image_server.start()
-
-        rospy.init_node('object_tracker')
-        rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, self.__read_image)
-
-        while not self.stopped:
+        while not self.__stopped:
             if self.__image is not None:
                 self.display_image(self.__image)
             else:
                 rospy.sleep(0.1)
 
-    def stop(self):
-        self.stopped = True
-
+    def cleanup(self):
         if self.__filters:
             for f in self.__filters:
                 f.stop()
-
-        self.image_server.stop()
 
     def display_image(self, image):
         cv2.imshow("Image", image)
@@ -180,15 +161,7 @@ class ObjectTracker(object):
         elif key == ord("s"):
             utils.write_image(image, log_info=True)
         elif key == ord("q"):
-            self.stop()
-
-    def flip(self, image):
-        img = image
-        if self.__flip_x:
-            img = cv2.flip(img, 0)
-        if self.__flip_y:
-            img = cv2.flip(img, 1)
-        return img
+            self.__stopped = True
 
     @staticmethod
     def cli_args():
@@ -213,4 +186,4 @@ class ObjectTracker(object):
                               cli.http_file,
                               cli.http_delay_secs,
                               cli.http_verbose,
-                              cli.verbose)
+                              cli.log_level)

@@ -9,7 +9,6 @@ import numpy as np
 import rospy
 
 import opencv_defaults as defs
-from image_server import ImageServer
 from opencv_utils import GREEN
 from opencv_utils import RED
 
@@ -26,34 +25,26 @@ class ColorPicker(object):
 
     def __init__(self,
                  image_source,
+                 image_server,
                  width,
                  flip_x,
                  flip_y,
-                 display,
-                 http_host,
-                 http_file,
-                 http_delay_secs,
-                 http_verbose):
+                 display):
         self.__image_source = image_source
+        self.__image_server = image_server
         self.__width = width
         self.__flip_x = flip_x
         self.__flip_y = flip_y
         self.__display = display
         self.__orig_width = self.__width
-        self.__image = None
-        self.roi_x = 0
-        self.roi_y = 0
-        self.bgr_text = ""
-        self.width = 0
-        self.height = 0
-        self.stopped = False
-        self.cnt = 0
+        self.__roi_x = 0
+        self.__roi_y = 0
+        self.__bgr_text = ""
+        self.__img_width = 0
+        self.__img_height = 0
+        self.__stopped = False
+        self.__cnt = 0
 
-        self.__image_server = ImageServer(http_file=http_file,
-                                          camera_name="Color Picker",
-                                          http_host=http_host,
-                                          http_delay_secs=http_delay_secs,
-                                          http_verbose=http_verbose)
 
     def __read_image(self):
         try:
@@ -67,11 +58,11 @@ class ColorPicker(object):
             if self.__flip_y:
                 cv2_img = cv2.flip(cv2_img, 1)
 
-            self.height, self.width = cv2_img.shape[:2]
+            self.__img_height, self.__img_width = cv2_img.shape[:2]
 
-            self.roi_x = (self.width / 2) - (self.roi_size / 2) + self.x_adj
-            self.roi_y = (self.height / 2) - (self.roi_size / 2) + self.y_adj
-            roi = cv2_img[self.roi_y:self.roi_y + self.roi_size, self.roi_x:self.roi_x + self.roi_size]
+            self.__roi_x = (self.__img_width / 2) - (self.roi_size / 2) + self.x_adj
+            self.__roi_y = (self.__img_height / 2) - (self.roi_size / 2) + self.y_adj
+            roi = cv2_img[self.__roi_y:self.__roi_y + self.roi_size, self.__roi_x:self.__roi_x + self.roi_size]
 
             roi_h, roi_w = roi.shape[:2]
             roi_canvas = np.zeros((roi_h, roi_w, 3), dtype="uint8")
@@ -83,57 +74,57 @@ class ColorPicker(object):
             avg_color = np.uint8(avg_color)
 
             # Draw a rectangle around the sample area
-            cv2.rectangle(cv2_img, (self.roi_x, self.roi_y), (self.roi_x + self.roi_size, self.roi_y + self.roi_size),
+            cv2.rectangle(cv2_img, (self.__roi_x, self.__roi_y),
+                          (self.__roi_x + self.roi_size, self.__roi_y + self.roi_size),
                           GREEN, 1)
 
             # Add text info
-            self.bgr_text = "BGR value: [{0}, {1}, {2}]".format(avg_color[0], avg_color[1], avg_color[2])
+            self.__bgr_text = "BGR value: [{0}, {1}, {2}]".format(avg_color[0], avg_color[1], avg_color[2])
             roi_text = " ROI: {0}x{1} ".format(str(self.roi_size), str(self.roi_size))
-            cv2.putText(cv2_img, self.bgr_text + roi_text, defs.TEXT_LOC, defs.TEXT_FONT, defs.TEXT_SIZE, RED, 1)
+            cv2.putText(cv2_img, self.__bgr_text + roi_text, defs.TEXT_LOC, defs.TEXT_FONT, defs.TEXT_SIZE, RED, 1)
 
             # Overlay color swatch on image
-            size = int(self.width * 0.20)
-            cv2_img[self.height - size:self.height, self.width - size:self.width] = avg_color
+            size = int(self.__img_width * 0.20)
+            cv2_img[self.__img_height - size:self.__img_height, self.__img_width - size:self.__img_width] = avg_color
 
-            if self.__image_server.enabled and self.cnt % 30 == 0:
-                rospy.loginfo(self.bgr_text)
+            if self.__image_server.enabled and self.__cnt % 30 == 0:
+                rospy.loginfo(self.__bgr_text)
 
-            self.cnt += 1
+            self.__cnt += 1
             return cv2_img
 
         except BaseException as e:
             rospy.logerr("Unexpected error in main loop [{0}]".format(e), exc_info=True)
             time.sleep(1)
 
-    # Do not run this in a background thread. cv2.waitKey has to run in main thread
+    # Do not run this in a background thread because cv2.waitKey has to run in main thread
     def run(self):
-        self.__image_server.start()
-
-        while not self.stopped:
+        while not self.__stopped:
             img = self.__read_image()
-            self.__image = img
-            self.__image_server.image = img
+            if img is not None:
+                self.__image_server.image = img
 
-            if self.__image is not None and self.__display:
-                self.display_image()
+                if self.__display:
+                    self.display_image(img)
 
-    def display_image(self):
+    def display_image(self, image):
         # Display image
-        cv2.imshow("Image", self.__image)
+        cv2.imshow("Image", image)
 
         key = cv2.waitKey(30) & 0xFF
 
         if key == 255:
             pass
         elif key == ord("c") or key == ord(" "):
-            print(self.bgr_text)
-        elif self.roi_y >= self.move_inc and (key == 0 or key == ord("k")):  # Up
+            print(self.__bgr_text)
+        elif self.__roi_y >= self.move_inc and (key == 0 or key == ord("k")):  # Up
             self.y_adj -= self.move_inc
-        elif self.roi_y <= self.height - self.roi_size - self.move_inc and (key == 1 or key == ord("j")):  # Down
+        elif self.__roi_y <= self.__img_height - self.roi_size - self.move_inc and (
+                key == 1 or key == ord("j")):  # Down
             self.y_adj += self.move_inc
-        elif self.roi_x >= self.move_inc and (key == 2 or key == ord("h")):  # Left
+        elif self.__roi_x >= self.move_inc and (key == 2 or key == ord("h")):  # Left
             self.x_adj -= self.move_inc
-        elif self.roi_x <= self.width - self.roi_size - self.move_inc - self.move_inc \
+        elif self.__roi_x <= self.__img_width - self.roi_size - self.move_inc - self.move_inc \
                 and (key == 3 or key == ord("l")):  # Right
             self.x_adj += self.move_inc
         elif self.roi_size >= self.roi_inc * 2 and (key == ord("-") or key == ord("_")):
@@ -150,7 +141,4 @@ class ColorPicker(object):
         elif key == ord("e"):
             self.__width += 10
         elif key == ord("q"):
-            self.stopped = True
-
-    def stop(self):
-        self.__image_server.stop()
+            self.__stopped = True

@@ -9,10 +9,12 @@ import opencv_defaults as defs
 from cli_args import LOG_LEVEL
 from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
 from constants import DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
-from constants import FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
+from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
 from constants import MASK_X, MASK_Y, USB_PORT
 from constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, USB_CAMERA, HTTP_HOST
+from direct_image_source import DirectImageSource
 from generic_filter import GenericFilter
+from image_server import ImageServer
 from object_tracker import ObjectTracker
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
@@ -92,23 +94,26 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
-    tracker = ObjectTracker(width=args[WIDTH],
+    image_source = DirectImageSource(usb_camera=args[USB_CAMERA], usb_port=args[USB_PORT])
+
+    image_server = ImageServer(http_file=args[HTTP_FILE],
+                               camera_name=args[CAMERA_NAME],
+                               http_host=args[HTTP_HOST],
+                               http_delay_secs=args[HTTP_DELAY_SECS],
+                               http_verbose=args[HTTP_VERBOSE])
+
+    tracker = ObjectTracker(image_source=image_source,
+                            image_server=image_server,
+                            width=args[WIDTH],
                             middle_percent=args[MIDDLE_PERCENT],
                             display=args[DISPLAY],
-                            flip_x=True,  #args[FLIP_X],
+                            flip_x=args[FLIP_X],
                             flip_y=args[FLIP_Y],
                             mask_x=args[MASK_X],
-                            mask_y=args[MASK_Y],
-                            usb_camera=args[USB_CAMERA],
-                            usb_port=args[USB_PORT],
-                            camera_name=args[CAMERA_NAME],
-                            http_host=args[HTTP_HOST],
-                            http_file=args[HTTP_FILE],
-                            http_delay_secs=args[HTTP_DELAY_SECS],
-                            http_verbose=args[HTTP_VERBOSE])
+                            mask_y=args[MASK_Y])
 
     obj_filter = SingleObjectFilter(tracker,
-                                    bgr_color="174, 56, 5",  #args[BGR_COLOR],
+                                    bgr_color="174, 56, 5",  # args[BGR_COLOR],
                                     hsv_range=args[HSV_RANGE],
                                     minimum_pixels=args[MINIMUM_PIXELS],
                                     display_text=True,
@@ -117,10 +122,14 @@ if __name__ == "__main__":
                                     vertical_lines=args[VERTICAL_LINES],
                                     horizontal_lines=args[HORIZONTAL_LINES])
     try:
-        tracker.start(obj_filter)
+        image_source.start()
+        image_server.start()
+        tracker.run(obj_filter)
     except KeyboardInterrupt:
         pass
     finally:
-        tracker.stop()
+        tracker.cleanup()
+        image_server.stop()
+        image_source.stop()
 
     rospy.loginfo("Exiting...")
