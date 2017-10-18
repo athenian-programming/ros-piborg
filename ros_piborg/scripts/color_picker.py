@@ -3,12 +3,10 @@
 import logging
 import numpy as np
 import time
-from cv_bridge import CvBridge
 
 import cv2
 import imutils
 import rospy
-from sensor_msgs.msg import CompressedImage
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -17,6 +15,7 @@ from cli_args import setup_cli_args
 from image_server import ImageServer
 from opencv_utils import GREEN
 from opencv_utils import RED
+from ros_image_source import RosImageSource
 from utils import setup_logging
 from utils import strip_loglevel
 
@@ -32,6 +31,7 @@ class ColorPicker(object):
     y_adj = 0
 
     def __init__(self,
+                 image_source,
                  width,
                  usb_camera,
                  usb_port,
@@ -42,6 +42,7 @@ class ColorPicker(object):
                  http_file,
                  http_delay_secs,
                  http_verbose):
+        self.__image_source = image_source
         self.__width = width
         self.__usb_camera = usb_camera
         self.__flip_x = flip_x
@@ -57,18 +58,16 @@ class ColorPicker(object):
         self.stopped = False
         self.cnt = 0
 
-        # Instantiate CvBridge
-        self.bridge = CvBridge()
-
         self.__image_server = ImageServer(http_file,
                                           camera_name="Color Picker",
                                           http_host=http_host,
                                           http_delay_secs=http_delay_secs,
                                           http_verbose=http_verbose)
 
-    def __read_image(self, msg):
+    def __read_image(self):
         try:
-            cv2_img = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
+            cv2_img = self.__image_source.get_image()
+
             cv2_img = imutils.resize(cv2_img, width=self.__width)
 
             if self.__flip_x:
@@ -108,30 +107,24 @@ class ColorPicker(object):
             if self.__image_server.enabled and self.cnt % 30 == 0:
                 rospy.loginfo(self.bgr_text)
 
-            self.__image = cv2_img
-            self.__image_server.image = cv2_img
-
             self.cnt += 1
+            return cv2_img
 
         except BaseException as e:
             rospy.logerr("Unexpected error in main loop [{0}]".format(e), exc_info=True)
             time.sleep(1)
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread
-    def start(self):
+    def run(self):
         self.__image_server.start()
 
-        rospy.init_node('object_tracker')
-        rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, self.__read_image)
+        while not self.stopped:
+            img = self.__read_image()
+            self.__image = img
+            self.__image_server.image = img
 
-        if self.__display:
-            while not self.stopped:
-                if self.__image is not None:
-                    self.display_image()
-                else:
-                    rospy.sleep(0.1)
-        else:
-            rospy.spin()
+            if self.__image is not None and self.__display:
+                self.display_image()
 
     def display_image(self):
         # Display image
@@ -189,12 +182,16 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
-    color_picker = ColorPicker(**strip_loglevel(args))
+    image_source = RosImageSource()
+    image_source.start()
+
+    color_picker = ColorPicker(image_source, **strip_loglevel(args))
     try:
-        color_picker.start()
+        color_picker.run()
     except KeyboardInterrupt:
         pass
     finally:
         color_picker.stop()
+        image_source.stop()
 
     rospy.loginfo("Exiting...")

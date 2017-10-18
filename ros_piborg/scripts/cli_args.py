@@ -91,7 +91,7 @@ def draw_box(p):
 
 
 def display(p):
-    return p.add_argument("--display", dest=DISPLAY, default=True, action="store_true", help="Display image [false]")
+    return p.add_argument("--display", dest=DISPLAY, default=False, action="store_true", help="Display image [false]")
 
 
 def serial_port(p):
