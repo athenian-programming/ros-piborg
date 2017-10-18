@@ -1,45 +1,44 @@
-from cv_bridge import CvBridge
 from threading import Condition
 
 import rospy
-from sensor_msgs.msg import CompressedImage
+from cv_bridge import CvBridge
+from sensor_msgs.msg import CompressedImage, Image
 
 
 class RosImageSource(object):
-    def __init__(self):
-        self.cond = Condition()
-        self.cv2_img = None
+    def __init__(self, topic, compressed, format):
+        self.__topic = topic
+        self.__compressed = compressed
+        self.__format = format
 
-        # Instantiate CvBridge
-        self.bridge = CvBridge()
+        self.__cond = Condition()
+        self.__cv2_img = None
+        self.__bridge = CvBridge()
 
-    def __read_image(self, msg):
-        try:
-            self.cond.acquire()
-            self.cv2_img = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
-            self.cond.notify()
-        except BaseException as e:
-            rospy.logerr("Unexpected error in read_image [{0}]".format(e))
-        finally:
-            self.cond.release()
+        rospy.init_node('ros_image_source')
 
     def start(self):
-        rospy.init_node('ros_image_source')
-        rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, self.__read_image)
+        rospy.Subscriber(self.__topic,
+                         CompressedImage if self.__compressed else Image,
+                         self.__image_cb)
 
     def stop(self):
         pass
 
+    def __image_cb(self, msg):
+        self.__cond.acquire()
+        if self.__compressed:
+            self.__cv2_img = self.__bridge.compressed_imgmsg_to_cv2(msg, self.__format)
+        else:
+            self.__cv2_img = self.__bridge.imgmsg_to_cv2(msg, self.__format)
+        self.__cond.notify()
+        self.__cond.release()
+
     def get_image(self):
-        retval = None
-        try:
-            self.cond.acquire()
-            while self.cv2_img is None:
-                self.cond.wait()
-            retval = self.cv2_img
-            self.cv2_img = None
-        except BaseException as e:
-            rospy.logerr("Unexpected error in image [{0}]".format(e))
-        finally:
-            self.cond.release()
+        self.__cond.acquire()
+        while self.__cv2_img is None:
+            self.__cond.wait()
+        retval = self.__cv2_img
+        self.__cv2_img = None
+        self.__cond.release()
         return retval

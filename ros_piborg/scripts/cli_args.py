@@ -1,17 +1,18 @@
 import argparse
 import logging
 
-from constants import CAMERA_NAME, CAMERA_NAME_DEFAULT, MQTT_HOST, SERIAL_PORT, BAUD_RATE, HTTP_HOST, USB_PORT, \
-    OOR_SIZE, \
-    OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
+from constants import CAMERA_NAME, CAMERA_NAME_DEFAULT, MQTT_HOST, SERIAL_PORT, BAUD_RATE
 from constants import DEVICE_ID, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import DRAW_CONTOUR, DRAW_BOX
 from constants import HSV_RANGE, WIDTH, USB_CAMERA, BGR_COLOR, MIDDLE_PERCENT, FLIP_X, FLIP_Y
-from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD, MQTT_TOPIC
+from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD
 from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_PIXELS, DISPLAY
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
+from constants import HTTP_HOST, USB_PORT, OOR_SIZE
 from constants import MASK_X, MASK_Y, USB_ID
 from constants import MINIMUM_PIXELS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
+from constants import OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
+from constants import TOPIC, COMPRESSED, FORMAT
 
 
 def setup_cli_args(*args):
@@ -22,8 +23,23 @@ def setup_cli_args(*args):
 
 
 def bgr(p):
-    return p.add_argument("--bgr", "--bgr_color", dest=BGR_COLOR,  # required=True,
+    return p.add_argument("--bgr", "--bgr_color", dest=BGR_COLOR, required=True,
                           help="BGR target value, e.g., -b \"174, 56, 5\"")
+
+
+def topic(p):
+    return p.add_argument("-t", "--topic", dest=TOPIC, required=True,
+                          help="ROS image topic ")
+
+
+def compressed(p):
+    return p.add_argument("--compressed", dest=COMPRESSED, default=False, action="store_true",
+                          help="Use CompressedImage [false]")
+
+
+def format(p):
+    return p.add_argument("--format", dest=FORMAT, default="bgr8",
+                          help="Image format [bgr8]")
 
 
 def usb(p):
@@ -168,11 +184,6 @@ def verbose(p):
 def log_file(p):
     return p.add_argument("-l", "--log_file", dest=LOG_FILE, default=None,
                           help="Logging output to file")
-
-
-def mqtt_topic(p):
-    return p.add_argument("--topic", "--mqtt_topic", dest=MQTT_TOPIC, required=True,
-                          help="Desired MQTT topic")
 
 
 def oor_size(p):

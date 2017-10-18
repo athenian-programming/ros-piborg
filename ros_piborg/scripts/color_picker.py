@@ -1,23 +1,17 @@
 #!/usr/bin/env python2
 
 import logging
-import numpy as np
 import time
 
 import cv2
 import imutils
+import numpy as np
 import rospy
 
-import cli_args  as cli
 import opencv_defaults as defs
-from cli_args import LOG_LEVEL
-from cli_args import setup_cli_args
 from image_server import ImageServer
 from opencv_utils import GREEN
 from opencv_utils import RED
-from ros_image_source import RosImageSource
-from utils import setup_logging
-from utils import strip_loglevel
 
 logger = logging.getLogger(__name__)
 
@@ -165,33 +159,3 @@ class ColorPicker(object):
         self.__image_server.stop()
 
 
-if __name__ == "__main__":
-    # Parse CLI args
-    args = setup_cli_args(cli.width,
-                          cli.usb,
-                          cli.usb_port,
-                          cli.display,
-                          cli.flip_x,
-                          cli.flip_y,
-                          cli.http_host,
-                          cli.http_file,
-                          cli.http_delay_secs,
-                          cli.http_verbose,
-                          cli.verbose)
-
-    # Setup logging
-    setup_logging(level=args[LOG_LEVEL])
-
-    image_source = RosImageSource()
-    image_source.start()
-
-    color_picker = ColorPicker(image_source, **strip_loglevel(args))
-    try:
-        color_picker.run()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        color_picker.stop()
-        image_source.stop()
-
-    rospy.loginfo("Exiting...")
