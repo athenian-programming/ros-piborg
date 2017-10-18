@@ -6,9 +6,7 @@ import imutils
 import numpy as np
 import rospy
 
-import cli_args  as cli
 import opencv_utils as utils
-from cli_args import setup_cli_args
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +127,8 @@ class ObjectTracker(object):
             for f in self.__filters:
                 f.start()
 
+
+zzz
         while not self.__stopped:
             if self.__image is not None:
                 self.display_image(self.__image)
@@ -163,27 +163,3 @@ class ObjectTracker(object):
         elif key == ord("q"):
             self.__stopped = True
 
-    @staticmethod
-    def cli_args():
-        return setup_cli_args(cli.bgr,
-                              cli.usb_camera,
-                              cli.usb_port,
-                              cli.width,
-                              cli.middle_percent,
-                              cli.minimum_pixels,
-                              cli.hsv_range,
-                              cli.flip_x,
-                              cli.flip_y,
-                              cli.mask_x,
-                              cli.mask_y,
-                              cli.vertical_lines,
-                              cli.horizontal_lines,
-                              cli.camera_name_optional,
-                              cli.display,
-                              cli.draw_contour,
-                              cli.draw_box,
-                              cli.http_host,
-                              cli.http_file,
-                              cli.http_delay_secs,
-                              cli.http_verbose,
-                              cli.log_level)

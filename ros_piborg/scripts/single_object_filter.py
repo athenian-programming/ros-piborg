@@ -5,8 +5,10 @@ import logging
 import cv2
 import rospy
 
+import cli_args  as cli
 import opencv_defaults as defs
 from cli_args import LOG_LEVEL
+from cli_args import setup_cli_args
 from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
 from constants import DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
@@ -89,7 +91,28 @@ class SingleObjectFilter(GenericFilter):
 
 if __name__ == "__main__":
     # Parse CLI args
-    args = ObjectTracker.cli_args()
+    args = setup_cli_args(cli.bgr,
+                          cli.usb_camera,
+                          cli.usb_port,
+                          cli.width,
+                          cli.middle_percent,
+                          cli.minimum_pixels,
+                          cli.hsv_range,
+                          cli.flip_x,
+                          cli.flip_y,
+                          cli.mask_x,
+                          cli.mask_y,
+                          cli.vertical_lines,
+                          cli.horizontal_lines,
+                          cli.camera_name_optional,
+                          cli.display,
+                          cli.draw_contour,
+                          cli.draw_box,
+                          cli.http_host,
+                          cli.http_file,
+                          cli.http_delay_secs,
+                          cli.http_verbose,
+                          cli.log_level)
 
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
