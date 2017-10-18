@@ -42,7 +42,7 @@ def format(p):
                           help="Image format [bgr8]")
 
 
-def usb(p):
+def usb_camera(p):
     return p.add_argument("-u", "--usb", dest=USB_CAMERA, default=False, action="store_true",
                           help="Use USB camera [false]")
 

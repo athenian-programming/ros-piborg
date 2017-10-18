@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import logging
 import time
@@ -27,8 +27,6 @@ class ColorPicker(object):
     def __init__(self,
                  image_source,
                  width,
-                 usb_camera,
-                 usb_port,
                  flip_x,
                  flip_y,
                  display,
@@ -38,7 +36,6 @@ class ColorPicker(object):
                  http_verbose):
         self.__image_source = image_source
         self.__width = width
-        self.__usb_camera = usb_camera
         self.__flip_x = flip_x
         self.__flip_y = flip_y
         self.__display = display
@@ -52,7 +49,7 @@ class ColorPicker(object):
         self.stopped = False
         self.cnt = 0
 
-        self.__image_server = ImageServer(http_file,
+        self.__image_server = ImageServer(http_file=http_file,
                                           camera_name="Color Picker",
                                           http_host=http_host,
                                           http_delay_secs=http_delay_secs,
@@ -157,5 +154,3 @@ class ColorPicker(object):
 
     def stop(self):
         self.__image_server.stop()
-
-

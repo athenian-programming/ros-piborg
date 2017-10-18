@@ -1,11 +1,11 @@
 import logging
-import numpy as np
 import time
-from cv_bridge import CvBridge
 
 import cv2
 import imutils
+import numpy as np
 import rospy
+from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage
 
 import cli_args  as cli
@@ -193,7 +193,7 @@ class ObjectTracker(object):
     @staticmethod
     def cli_args():
         return setup_cli_args(cli.bgr,
-                              cli.usb,
+                              cli.usb_camera,
                               cli.usb_port,
                               cli.width,
                               cli.middle_percent,

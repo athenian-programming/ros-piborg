@@ -1,27 +1,33 @@
+import time
 from threading import Condition
+from threading import Thread
 
-import rospy
-from cv_bridge import CvBridge
-from sensor_msgs.msg import CompressedImage
+from camera import Camera
 
 
 class DirectImageSource(object):
-    def __init__(self):
+    def __init__(self, usb_camera, usb_port):
         self.__cond = Condition()
         self.__cv2_img = None
-        self.__bridge = CvBridge()
+        self.__cam = Camera(usb_camera=usb_camera, usb_port=usb_port)
 
     def start(self):
-        rospy.Subscriber('/raspicam_node/image/compressed', CompressedImage, self.__image_cb)
+        Thread(target=self.__read_image).start()
 
     def stop(self):
-        pass
+        self.__cam.close()
 
-    def __image_cb(self, msg):
-        self.__cond.acquire()
-        self.__cv2_img = self.__bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
-        self.__cond.notify()
-        self.__cond.release()
+    def __read_image(self, msg):
+        while self.__cam.is_open():
+            self.__cond.acquire()
+
+            self.__cv2_img = self.__cam.read()
+            if self.__cv2_img is None:
+                # logger.error("Null image read from camera")
+                time.sleep(.5)
+            else:
+                self.__cond.notify()
+            self.__cond.release()
 
     def get_image(self):
         self.__cond.acquire()
