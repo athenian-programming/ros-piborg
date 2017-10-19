@@ -45,7 +45,6 @@ class ColorPicker(object):
         self.__stopped = False
         self.__cnt = 0
 
-
     def __read_image(self):
         try:
             cv2_img = self.__image_source.get_image()
@@ -87,7 +86,7 @@ class ColorPicker(object):
             size = int(self.__img_width * 0.20)
             cv2_img[self.__img_height - size:self.__img_height, self.__img_width - size:self.__img_width] = avg_color
 
-            if self.__image_server.enabled and self.__cnt % 30 == 0:
+            if self.__image_server is not None and self.__image_server.enabled and self.__cnt % 30 == 0:
                 rospy.loginfo(self.__bgr_text)
 
             self.__cnt += 1
@@ -102,10 +101,13 @@ class ColorPicker(object):
         while not self.__stopped:
             img = self.__read_image()
             if img is not None:
-                self.__image_server.image = img
+                if self.__image_server is not None:
+                    self.__image_server.image = img
 
                 if self.__display:
                     self.display_image(img)
+            else:
+                rospy.sleep(0.1)
 
     def display_image(self, image):
         # Display image
@@ -120,7 +122,7 @@ class ColorPicker(object):
         elif self.__roi_y >= self.move_inc and (key == 0 or key == ord("k")):  # Up
             self.y_adj -= self.move_inc
         elif self.__roi_y <= self.__img_height - self.roi_size - self.move_inc and (
-                key == 1 or key == ord("j")):  # Down
+                        key == 1 or key == ord("j")):  # Down
             self.y_adj += self.move_inc
         elif self.__roi_x >= self.move_inc and (key == 2 or key == ord("h")):  # Left
             self.x_adj -= self.move_inc

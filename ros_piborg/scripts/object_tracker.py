@@ -127,11 +127,14 @@ class ObjectTracker(object):
             for f in self.__filters:
                 f.start()
 
-
-zzz
         while not self.__stopped:
-            if self.__image is not None:
-                self.display_image(self.__image)
+            img = self.__read_image()
+            if img is not None:
+                if self.__image_server is not None:
+                    self.__image_server.image = img
+
+                if self.__display:
+                    self.display_image(img)
             else:
                 rospy.sleep(0.1)
 
