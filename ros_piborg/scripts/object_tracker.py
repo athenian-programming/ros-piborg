@@ -67,7 +67,7 @@ class ObjectTracker(object):
 
     @property
     def markup_image(self):
-        return self.__display or self.__image_server.enabled
+        return self.__display or (self.__image_server is not None and self.__image_server.enabled)
 
     def __read_image(self):
         try:
@@ -107,10 +107,9 @@ class ObjectTracker(object):
                     f.publish_data()
                     f.markup_image(cv2_img)
 
-            self.__image_server.image = cv2_img
-            self.__image = cv2_img
-
             self.__cnt += 1
+
+            return cv2_img
 
         except KeyboardInterrupt as e:
             raise e

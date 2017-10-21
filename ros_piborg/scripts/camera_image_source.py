@@ -5,7 +5,7 @@ from threading import Thread
 from camera import Camera
 
 
-class DirectImageSource(object):
+class CameraImageSource(object):
     def __init__(self, usb_camera, usb_port):
         self.__cond = Condition()
         self.__cv2_img = None

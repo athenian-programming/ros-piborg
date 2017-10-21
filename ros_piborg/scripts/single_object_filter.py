@@ -7,6 +7,7 @@ import rospy
 
 import cli_args  as cli
 import opencv_defaults as defs
+from camera_image_source import CameraImageSource
 from cli_args import LOG_LEVEL
 from cli_args import setup_cli_args
 from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
@@ -14,7 +15,6 @@ from constants import DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
 from constants import MASK_X, MASK_Y, USB_PORT
 from constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, USB_CAMERA, HTTP_HOST
-from direct_image_source import DirectImageSource
 from generic_filter import GenericFilter
 from image_server import ImageServer
 from object_tracker import ObjectTracker
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
-    image_source = DirectImageSource(usb_camera=args[USB_CAMERA], usb_port=args[USB_PORT])
+    image_source = CameraImageSource(usb_camera=args[USB_CAMERA], usb_port=args[USB_PORT])
 
     image_server = ImageServer(http_file=args[HTTP_FILE],
                                camera_name=args[CAMERA_NAME],
