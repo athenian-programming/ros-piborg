@@ -17,7 +17,7 @@ class CameraImageSource(object):
     def stop(self):
         self.__cam.close()
 
-    def __read_image(self, msg):
+    def __read_image(self):
         while self.__cam.is_open():
             self.__cond.acquire()
 
