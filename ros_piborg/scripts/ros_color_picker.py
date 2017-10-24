@@ -7,7 +7,7 @@ from cli_args import LOG_LEVEL
 from cli_args import setup_cli_args
 from color_picker import ColorPicker
 from constants import DISPLAY, HTTP_HOST, HTTP_FILE, HTTP_DELAY_SECS, HTTP_VERBOSE
-from constants import TOPIC, COMPRESSED, FORMAT, WIDTH, FLIP_X, FLIP_Y
+from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, WIDTH, FLIP_X, FLIP_Y
 from image_server import ImageServer
 from ros_image_source import RosImageSource
 from utils import setup_logging
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
-    image_source = RosImageSource(topic=args[TOPIC],
+    image_source = RosImageSource(topic=args[IMAGE_TOPIC],
                                   compressed=args[COMPRESSED],
                                   format=args[FORMAT])
 

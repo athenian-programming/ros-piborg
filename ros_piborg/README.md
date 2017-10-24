@@ -10,7 +10,7 @@ Run process_image with:
 $ rosrun ros_piborg process_image.py
 ```
 
-$ rosrun ros_piborg ros_color_picker.py -x -t /raspicam_node/image/compressed --compressed --http paris.local
+$ rosrun ros_piborg ros_color_picker.py -x --img_topic /raspicam_node/image/compressed --compressed --http paris.local
 
 $ rosrun ros_piborg direct_color_picker.py -x --http rosborg.local
 

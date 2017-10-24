@@ -1,4 +1,7 @@
 import cv2
+import rospy
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Vector3
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -10,12 +13,14 @@ from opencv_utils import get_moment
 class SingleObjectFilter(GenericFilter):
     args = [cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.vert_lines, cli.horiz_lines]
 
-    def __init__(self, tracker, *args, **kwargs):
+    def __init__(self, tracker, point_topic, *args, **kwargs):
         super(SingleObjectFilter, self).__init__(tracker, *args, **kwargs)
         self.contour = None
         self.area = None
         self.img_x, self.img_y = -1, -1
         self.height, self.width = None, None
+        self.__loc_pub = rospy.Publisher(point_topic + "/point", Point, queue_size=5)
+        self.__dim_pub = rospy.Publisher(point_topic + "/dimensions", Vector3, queue_size=5)
 
     def reset_data(self):
         self.img_x, self.img_y = -1, -1
@@ -35,14 +40,26 @@ class SingleObjectFilter(GenericFilter):
         # Write location if it is different from previous value written
         if self.img_x != self.prev_x or self.img_y != self.prev_y:
             # self.location_server.write_location(self.img_x, self.img_y, self.width, self.height, self.middle_inc)
+            point = Point()
+            point.x = self.img_x
+            point.y = self.img_y
+            point.z = 0
+            self.__loc_pub.publish(point)
+
+            dim = Vector3()
+            dim.x = self.width
+            dim.y = self.height
+            dim.z = self.middle_inc
+            self.__dim_pub.publish(dim)
+
             self.prev_x, self.prev_y = self.img_x, self.img_y
 
     def markup_image(self, image):
         mid_x, mid_y = self.width / 2, self.height / 2
-        middle_inc = int(self.middle_inc)
+        mid_inc = int(self.middle_inc)
 
-        x_in_middle = mid_x - middle_inc <= self.img_x <= mid_x + middle_inc
-        y_in_middle = mid_y - middle_inc <= self.img_y <= mid_y + middle_inc
+        x_in_middle = mid_x - mid_inc <= self.img_x <= mid_x + mid_inc
+        y_in_middle = mid_y - mid_inc <= self.img_y <= mid_y + mid_inc
         x_color = GREEN if x_in_middle else RED if self.img_x == -1 else BLUE
         y_color = GREEN if y_in_middle else RED if self.img_y == -1 else BLUE
 
@@ -64,10 +81,10 @@ class SingleObjectFilter(GenericFilter):
 
         # Draw the alignment lines
         if self.vertical_lines:
-            cv2.line(image, (mid_x - middle_inc, 0), (mid_x - middle_inc, self.height), x_color, 1)
-            cv2.line(image, (mid_x + middle_inc, 0), (mid_x + middle_inc, self.height), x_color, 1)
+            cv2.line(image, (mid_x - mid_inc, 0), (mid_x - mid_inc, self.height), x_color, 1)
+            cv2.line(image, (mid_x + mid_inc, 0), (mid_x + mid_inc, self.height), x_color, 1)
         if self.horizontal_lines:
-            cv2.line(image, (0, mid_y - middle_inc), (self.width, mid_y - middle_inc), y_color, 1)
-            cv2.line(image, (0, mid_y + middle_inc), (self.width, mid_y + middle_inc), y_color, 1)
+            cv2.line(image, (0, mid_y - mid_inc), (self.width, mid_y - mid_inc), y_color, 1)
+            cv2.line(image, (0, mid_y + mid_inc), (self.width, mid_y + mid_inc), y_color, 1)
         if self.display_text:
             cv2.putText(image, text, defs.TEXT_LOC, defs.TEXT_FONT, defs.TEXT_SIZE, RED, 1)

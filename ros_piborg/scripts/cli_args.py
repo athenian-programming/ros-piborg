@@ -9,10 +9,10 @@ from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD
 from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_PIXELS, DISPLAY
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
 from constants import HTTP_HOST, USB_PORT, OOR_SIZE
+from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SOF_TOPIC
 from constants import MASK_X, MASK_Y, USB_ID
 from constants import MINIMUM_PIXELS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
 from constants import OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
-from constants import TOPIC, COMPRESSED, FORMAT
 
 
 def setup_cli_args(*args):
@@ -31,9 +31,13 @@ def bgr(p):
                           help="BGR target value, e.g., -b \"174, 56, 5\"")
 
 
-def topic(p):
-    return p.add_argument("-t", "--topic", dest=TOPIC, required=True,
-                          help="ROS image topic ")
+def image_topic(p):
+    return p.add_argument("--img_topic", dest=IMAGE_TOPIC, required=True, help="ROS image topic")
+
+
+def sof_topic(p):
+    return p.add_argument("--sof_topic", dest=SOF_TOPIC, default="/single_object_filter",
+                          help="Single Object Filter topic")
 
 
 def compressed(p):
@@ -42,8 +46,7 @@ def compressed(p):
 
 
 def format(p):
-    return p.add_argument("--format", dest=FORMAT, default="bgr8",
-                          help="Image format [bgr8]")
+    return p.add_argument("--format", dest=FORMAT, default="bgr8", help="Image format [bgr8]")
 
 
 def usb_camera(p):
@@ -70,13 +73,11 @@ def flip_y(p):
 
 
 def mask_x(p):
-    return p.add_argument("--mask_x", "--maskx", dest=MASK_X, default=0, type=int,
-                          help="Mask image on X axis [0]")
+    return p.add_argument("--mask_x", "--maskx", dest=MASK_X, default=0, type=int, help="Image mask on X axis [0]")
 
 
 def mask_y(p):
-    return p.add_argument("--mask_y", "--masky", dest=MASK_Y, default=0, type=int,
-                          help="Mask image on Y axis [0]")
+    return p.add_argument("--mask_y", "--masky", dest=MASK_Y, default=0, type=int, help="Image mask on Y axis [0]")
 
 
 def width(p):
@@ -186,8 +187,7 @@ def log_level(p):
 
 
 def log_file(p):
-    return p.add_argument("-l", "--log_file", dest=LOG_FILE, default=None,
-                          help="Logging output to file")
+    return p.add_argument("-l", "--log_file", dest=LOG_FILE, default=None, help="Logging output to file")
 
 
 def oor_size(p):
@@ -203,4 +203,3 @@ def oor_time(p):
 def oor_upper(p):
     return p.add_argument("--oor_upper", dest=OOR_UPPER, type=int, default=OOR_UPPER_DEFAULT,
                           help="Out of range upper boundary [{0}]".format(OOR_UPPER_DEFAULT))
-

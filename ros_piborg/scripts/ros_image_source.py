@@ -8,7 +8,7 @@ import cli_args  as cli
 
 
 class RosImageSource(object):
-    args = [cli.topic, cli.compressed, cli.format]
+    args = [cli.image_topic, cli.compressed, cli.format]
 
     def __init__(self, topic, compressed, format):
         self.__topic = topic

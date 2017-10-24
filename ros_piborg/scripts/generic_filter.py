@@ -29,7 +29,6 @@ class GenericFilter(object):
         self.height, self.width = -1, -1
         self.contours = None
         self.contour_finder = ContourFinder(bgr_color, hsv_range, minimum_pixels)
-        # self.location_server = LocationServer(grpc_port)
 
     @property
     def prev_x(self):
@@ -55,11 +54,6 @@ class GenericFilter(object):
         return int(mid_x * middle_pct)
 
     def start(self):
-        # try:
-        #    self.location_server.start()
-        # except BaseException as e:
-        #    logger.error("Unable to start location server [{0}]".format(e), exc_info=True)
-        #    sys.exit(1)
         pass
 
     def stop(self):

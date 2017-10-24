@@ -1,8 +1,6 @@
 import os
 import sys
 
-TOPIC = "topic"
-
 __path = os.path.abspath(sys.modules[__name__].__file__)
 __dirname = os.path.dirname(__path)
 HTTP_TEMPLATE_DEFAULT = __dirname + "/html/single-image.html"
@@ -49,7 +47,8 @@ DISPLAY = "display"
 BGR_COLOR = "bgr_color"
 WIDTH = "width"
 MIDDLE_PERCENT = "middle_percent"
-TOPIC = "topic"
+IMAGE_TOPIC = "img_topic"
+SOF_TOPIC = "point_topic"
 COMPRESSED = "compressed"
 FORMAT = "format"
 FLIP_X = "flip_x"
