@@ -11,16 +11,17 @@ from opencv_utils import get_moment
 
 
 class SingleObjectFilter(GenericFilter):
-    args = [cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.vert_lines, cli.horiz_lines]
+    args = [cli.sof_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour,
+            cli.draw_box, cli.vert_lines, cli.horiz_lines]
 
-    def __init__(self, tracker, point_topic, *args, **kwargs):
+    def __init__(self, tracker, sof_topic, *args, **kwargs):
         super(SingleObjectFilter, self).__init__(tracker, *args, **kwargs)
         self.contour = None
         self.area = None
         self.img_x, self.img_y = -1, -1
         self.height, self.width = None, None
-        self.__loc_pub = rospy.Publisher(point_topic + "/point", Point, queue_size=5)
-        self.__dim_pub = rospy.Publisher(point_topic + "/dimensions", Vector3, queue_size=5)
+        self.__loc_pub = rospy.Publisher(sof_topic + "/point", Point, queue_size=5)
+        self.__dim_pub = rospy.Publisher(sof_topic + "/dimensions", Vector3, queue_size=5)
 
     def reset_data(self):
         self.img_x, self.img_y = -1, -1

@@ -50,7 +50,7 @@ if __name__ == "__main__":
                             mask_y=args[MASK_Y])
 
     obj_filter = SingleObjectFilter(tracker=tracker,
-                                    point_topic=args[SOF_TOPIC],
+                                    sof_topic=args[SOF_TOPIC],
                                     bgr_color=args[BGR_COLOR],
                                     hsv_range=args[HSV_RANGE],
                                     minimum_pixels=args[MINIMUM_PIXELS],
