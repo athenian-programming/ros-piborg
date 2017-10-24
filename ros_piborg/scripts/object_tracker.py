@@ -39,7 +39,7 @@ class ObjectTracker(object):
 
         self.__image = None
         self.__stopped = False
-        self.__cnt = 0
+        self.cnt = 0
 
     @property
     def width(self):
@@ -107,7 +107,7 @@ class ObjectTracker(object):
                     f.publish_data()
                     f.markup_image(cv2_img)
 
-            self.__cnt += 1
+            self.cnt += 1
 
             return cv2_img
 

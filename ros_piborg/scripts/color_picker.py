@@ -43,7 +43,7 @@ class ColorPicker(object):
         self.__img_width = 0
         self.__img_height = 0
         self.__stopped = False
-        self.__cnt = 0
+        self.cnt = 0
 
     def __read_image(self):
         try:
@@ -86,10 +86,10 @@ class ColorPicker(object):
             size = int(self.__img_width * 0.20)
             cv2_img[self.__img_height - size:self.__img_height, self.__img_width - size:self.__img_width] = avg_color
 
-            if self.__image_server is not None and self.__image_server.enabled and self.__cnt % 30 == 0:
+            if self.__image_server is not None and self.__image_server.enabled and self.cnt % 30 == 0:
                 rospy.loginfo(self.__bgr_text)
 
-            self.__cnt += 1
+            self.cnt += 1
             return cv2_img
 
         except BaseException as e:
