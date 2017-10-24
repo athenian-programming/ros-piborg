@@ -25,7 +25,7 @@ class GenericFilter(object):
         self.vertical_lines = vertical_lines
         self.horizontal_lines = horizontal_lines
         self.predicate = predicate
-        self._prev_x, self._prev_y = -1, -1
+        self.__prev_x, self.__prev_y = -1, -1
         self.height, self.width = -1, -1
         self.contours = None
         self.contour_finder = ContourFinder(bgr_color, hsv_range, minimum_pixels)
@@ -33,19 +33,19 @@ class GenericFilter(object):
 
     @property
     def prev_x(self):
-        return self._prev_x
+        return self.__prev_x
 
     @prev_x.setter
     def prev_x(self, val):
-        self._prev_x = val
+        self.__prev_x = val
 
     @property
     def prev_y(self):
-        return self._prev_y
+        return self.__prev_y
 
     @prev_y.setter
     def prev_y(self, val):
-        self._prev_y = val
+        self.__prev_y = val
 
     @property
     def middle_inc(self):

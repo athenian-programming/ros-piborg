@@ -22,27 +22,11 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     # Parse CLI args
-    args = setup_cli_args(cli.bgr,
-                          cli.usb_camera,
-                          cli.usb_port,
-                          cli.width,
-                          cli.middle_percent,
-                          cli.minimum_pixels,
-                          cli.hsv_range,
-                          cli.flip_x,
-                          cli.flip_y,
-                          cli.mask_x,
-                          cli.mask_y,
-                          cli.vertical_lines,
-                          cli.horizontal_lines,
+    args = setup_cli_args(cli.camera_source_args,
                           cli.camera_name_optional,
-                          cli.display,
-                          cli.draw_contour,
-                          cli.draw_box,
-                          cli.http_host,
-                          cli.http_file,
-                          cli.http_delay_secs,
-                          cli.http_verbose,
+                          cli.image_server_args,
+                          cli.object_filter_args,
+                          cli.object_tracker_args,
                           cli.log_level)
 
     # Setup logging
@@ -66,7 +50,7 @@ if __name__ == "__main__":
                             mask_x=args[MASK_X],
                             mask_y=args[MASK_Y])
 
-    obj_filter = SingleObjectFilter(tracker,
+    obj_filter = SingleObjectFilter(tracker=tracker,
                                     bgr_color=args[BGR_COLOR],
                                     hsv_range=args[HSV_RANGE],
                                     minimum_pixels=args[MINIMUM_PIXELS],

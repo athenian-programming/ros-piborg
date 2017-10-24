@@ -18,7 +18,11 @@ from constants import TOPIC, COMPRESSED, FORMAT
 def setup_cli_args(*args):
     parser = argparse.ArgumentParser()
     for arg in args:
-        arg(parser)
+        if type(arg) is list:
+            for a in arg:
+                a(parser)
+        else:
+            arg(parser)
     return vars(parser.parse_args())
 
 
@@ -199,3 +203,16 @@ def oor_time(p):
 def oor_upper(p):
     return p.add_argument("--oor_upper", dest=OOR_UPPER, type=int, default=OOR_UPPER_DEFAULT,
                           help="Out of range upper boundary [{0}]".format(OOR_UPPER_DEFAULT))
+
+
+camera_source_args = [usb_camera, usb_port]
+
+image_server_args = [http_file, http_host, http_delay_secs, http_verbose]
+
+object_tracker_args = [width, middle_percent, display, flip_x, mask_x, flip_x, mask_y]
+
+color_picker_args = [width, display, flip_x, flip_x]
+
+object_filter_args = [bgr, hsv_range, minimum_pixels, draw_contour, draw_box, vertical_lines, horizontal_lines]
+
+ros_image_args = [topic, compressed, format]

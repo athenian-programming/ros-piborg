@@ -14,16 +14,9 @@ from utils import setup_logging
 
 if __name__ == "__main__":
     # Parse CLI args
-    args = setup_cli_args(cli.usb_camera,
-                          cli.usb_port,
-                          cli.display,
-                          cli.width,
-                          cli.flip_x,
-                          cli.flip_y,
-                          cli.http_host,
-                          cli.http_file,
-                          cli.http_delay_secs,
-                          cli.http_verbose,
+    args = setup_cli_args(cli.camera_source_args,
+                          cli.image_server_args,
+                          cli.color_picker_args,
                           cli.log_level)
 
     # Setup logging
