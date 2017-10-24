@@ -14,9 +14,9 @@ from utils import setup_logging
 
 if __name__ == "__main__":
     # Parse CLI args
-    args = setup_cli_args(cli.camera_source_args,
-                          cli.image_server_args,
-                          cli.color_picker_args,
+    args = setup_cli_args(CameraImageSource.args,
+                          ImageServer.args,
+                          ColorPicker.args,
                           cli.log_level)
 
     # Setup logging

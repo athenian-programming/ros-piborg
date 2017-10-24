@@ -1,5 +1,6 @@
 import cv2
 
+import cli_args  as cli
 import opencv_defaults as defs
 from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
@@ -7,6 +8,8 @@ from opencv_utils import get_moment
 
 
 class SingleObjectFilter(GenericFilter):
+    args = [cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.vert_lines, cli.horiz_lines]
+
     def __init__(self, tracker, *args, **kwargs):
         super(SingleObjectFilter, self).__init__(tracker, *args, **kwargs)
         self.contour = None
@@ -68,4 +71,3 @@ class SingleObjectFilter(GenericFilter):
             cv2.line(image, (0, mid_y + middle_inc), (self.width, mid_y + middle_inc), y_color, 1)
         if self.display_text:
             cv2.putText(image, text, defs.TEXT_LOC, defs.TEXT_FONT, defs.TEXT_SIZE, RED, 1)
-

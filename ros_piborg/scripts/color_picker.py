@@ -8,6 +8,7 @@ import imutils
 import numpy as np
 import rospy
 
+import cli_args  as cli
 import opencv_defaults as defs
 from opencv_utils import GREEN
 from opencv_utils import RED
@@ -16,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 class ColorPicker(object):
+    args = [cli.width, cli.display, cli.flip_x, cli.flip_y]
+
     roi_size = 24
     orig_roi_size = roi_size
     roi_inc = 6

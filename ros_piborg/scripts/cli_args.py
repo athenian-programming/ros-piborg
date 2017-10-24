@@ -89,7 +89,7 @@ def middle_percent(p):
                           type=int, help="Middle percent [{0}]".format(MIDDLE_PERCENT_DEFAULT))
 
 
-def minimum_pixels(p):
+def min_pixels(p):
     return p.add_argument("--min", "--min_pixels", dest=MINIMUM_PIXELS, default=MINIMUM_PIXELS_DEFAULT,
                           type=int,
                           help="Minimum pixel area [{0}]".format(MINIMUM_PIXELS_DEFAULT))
@@ -150,12 +150,12 @@ def alternate(p):
                           help="Alternate servo actions [false]")
 
 
-def vertical_lines(p):
+def vert_lines(p):
     return p.add_argument("--vertical", "--vertical_lines", dest=VERTICAL_LINES, default=False, action="store_true",
                           help="Draw vertical lines [false]")
 
 
-def horizontal_lines(p):
+def horiz_lines(p):
     return p.add_argument("--horizontal", "--horizontal_lines", dest=HORIZONTAL_LINES, default=False,
                           action="store_true", help="Draw horizontal lines [false]")
 
@@ -204,15 +204,3 @@ def oor_upper(p):
     return p.add_argument("--oor_upper", dest=OOR_UPPER, type=int, default=OOR_UPPER_DEFAULT,
                           help="Out of range upper boundary [{0}]".format(OOR_UPPER_DEFAULT))
 
-
-camera_source_args = [usb_camera, usb_port]
-
-image_server_args = [http_file, http_host, http_delay_secs, http_verbose]
-
-object_tracker_args = [width, middle_percent, display, flip_x, flip_y, mask_x, mask_y]
-
-color_picker_args = [width, display, flip_x, flip_y]
-
-object_filter_args = [bgr, hsv_range, minimum_pixels, draw_contour, draw_box, vertical_lines, horizontal_lines]
-
-ros_image_args = [topic, compressed, format]

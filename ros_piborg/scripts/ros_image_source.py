@@ -4,8 +4,12 @@ import rospy
 from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage, Image
 
+import cli_args  as cli
+
 
 class RosImageSource(object):
+    args = [cli.topic, cli.compressed, cli.format]
+
     def __init__(self, topic, compressed, format):
         self.__topic = topic
         self.__compressed = compressed

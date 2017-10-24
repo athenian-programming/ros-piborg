@@ -10,6 +10,7 @@ from flask import redirect
 from flask import request
 from werkzeug.wrappers import Response
 
+import cli_args  as cli
 import opencv_utils as utils
 from constants import CAMERA_NAME_DEFAULT
 from constants import HTTP_HOST_DEFAULT, HTTP_DELAY_SECS_DEFAULT, HTTP_PORT_DEFAULT
@@ -21,6 +22,8 @@ logger = logging.getLogger(__name__)
 
 
 class ImageServer(object):
+    args = [cli.http_file, cli.http_host, cli.http_delay_secs, cli.http_verbose]
+
     def __init__(self,
                  http_file,
                  camera_name=CAMERA_NAME_DEFAULT,

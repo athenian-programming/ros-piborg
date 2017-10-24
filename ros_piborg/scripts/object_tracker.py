@@ -6,6 +6,7 @@ import imutils
 import numpy as np
 import rospy
 
+import cli_args  as cli
 import opencv_utils as utils
 
 logger = logging.getLogger(__name__)
@@ -14,6 +15,8 @@ BLACK = np.uint8((0, 0, 0))
 
 
 class ObjectTracker(object):
+    args = [cli.width, cli.middle_percent, cli.display, cli.flip_x, cli.flip_y, cli.mask_x, cli.mask_y]
+
     def __init__(self,
                  image_source,
                  image_server,

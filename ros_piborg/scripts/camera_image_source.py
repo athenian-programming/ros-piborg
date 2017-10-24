@@ -2,10 +2,13 @@ import time
 from threading import Condition
 from threading import Thread
 
+import cli_args  as cli
 from camera import Camera
 
 
 class CameraImageSource(object):
+    args = [cli.usb_camera, cli.usb_port]
+
     def __init__(self, usb_camera, usb_port):
         self.__cond = Condition()
         self.__cv2_img = None
