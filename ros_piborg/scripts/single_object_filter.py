@@ -13,7 +13,7 @@ from cli_args import setup_cli_args
 from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
 from constants import DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
-from constants import MASK_X, MASK_Y, USB_PORT
+from constants import MASK_X, MASK_Y, USB_PORT, BGR_COLOR
 from constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, USB_CAMERA, HTTP_HOST
 from generic_filter import GenericFilter
 from image_server import ImageServer
@@ -136,7 +136,7 @@ if __name__ == "__main__":
                             mask_y=args[MASK_Y])
 
     obj_filter = SingleObjectFilter(tracker,
-                                    bgr_color="174, 56, 5",  # args[BGR_COLOR],
+                                    bgr_color=args[BGR_COLOR],  # "174, 56, 5"
                                     hsv_range=args[HSV_RANGE],
                                     minimum_pixels=args[MINIMUM_PIXELS],
                                     display_text=True,

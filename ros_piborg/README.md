@@ -10,6 +10,8 @@ Run process_image with:
 $ rosrun ros_piborg process_image.py
 ```
 
+$ rosrun ros_piborg ros_color_picker.py
+
 roslaunch raspicam_node camerav2_1280x960.launch
 
 Install *raspicam_node* as described [here](https://github.com/UbiquityRobotics/raspicam_node).
