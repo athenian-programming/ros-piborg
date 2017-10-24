@@ -19,8 +19,6 @@ class RosImageSource(object):
         self.__cv2_img = None
         self.__bridge = CvBridge()
 
-        rospy.init_node('ros_image_source')
-
     def start(self):
         rospy.Subscriber(self.__topic,
                          CompressedImage if self.__compressed else Image,

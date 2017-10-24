@@ -22,6 +22,8 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
+    rospy.init_node('ros_color_picker')
+
     image_source = RosImageSource(topic=args[IMAGE_TOPIC],
                                   compressed=args[COMPRESSED],
                                   format=args[FORMAT])
@@ -38,6 +40,7 @@ if __name__ == "__main__":
                                flip_x=args[FLIP_X],
                                flip_y=args[FLIP_Y],
                                display=args[DISPLAY])
+
     try:
         image_source.start()
         image_server.start()

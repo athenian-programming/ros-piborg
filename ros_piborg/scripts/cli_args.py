@@ -9,7 +9,7 @@ from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD
 from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_PIXELS, DISPLAY
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
 from constants import HTTP_HOST, USB_PORT, OOR_SIZE
-from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SOF_TOPIC
+from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SO_TOPIC
 from constants import MASK_X, MASK_Y, USB_ID
 from constants import MINIMUM_PIXELS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
 from constants import OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
@@ -35,9 +35,9 @@ def image_topic(p):
     return p.add_argument("--img_topic", dest=IMAGE_TOPIC, required=True, help="ROS image topic")
 
 
-def sof_topic(p):
-    return p.add_argument("--sof_topic", dest=SOF_TOPIC, default="/single_object_filter",
-                          help="Single Object Filter topic")
+def so_topic(p):
+    return p.add_argument("--so_topic", dest=SO_TOPIC, default="/single_object",
+                          help="Single Object topic")
 
 
 def compressed(p):

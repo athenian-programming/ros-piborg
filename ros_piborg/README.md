@@ -12,9 +12,9 @@ $ rosrun ros_piborg process_image.py
 
 $ rosrun ros_piborg ros_color_picker.py -x --img_topic /raspicam_node/image/compressed --compressed --http paris.local
 
-$ rosrun ros_piborg direct_color_picker.py -x --http rosborg.local
+$ rosrun ros_piborg local_color_picker.py -x --http rosborg.local
 
-$ rosrun ros_piborg direct_single_object_filter.py -x --bgr "174, 56, 5" --http rosborg.local
+$ rosrun ros_piborg local_single_object.py -x --bgr "174, 56, 5" --http rosborg.local
 
 roslaunch raspicam_node camerav2_1280x960.launch
 
