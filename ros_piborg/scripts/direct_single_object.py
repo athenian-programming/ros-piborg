@@ -23,8 +23,7 @@ logger = logging.getLogger(__name__)
 if __name__ == "__main__":
     # Parse CLI args
     args = setup_cli_args(cli.camera_source_args,
-                          cli.camera_name_optional,
-                          cli.image_server_args,
+                          cli.image_server_args, cli.camera_name_optional,
                           cli.object_filter_args,
                           cli.object_tracker_args,
                           cli.log_level)

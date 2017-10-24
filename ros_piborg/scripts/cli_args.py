@@ -209,9 +209,9 @@ camera_source_args = [usb_camera, usb_port]
 
 image_server_args = [http_file, http_host, http_delay_secs, http_verbose]
 
-object_tracker_args = [width, middle_percent, display, flip_x, mask_x, flip_x, mask_y]
+object_tracker_args = [width, middle_percent, display, flip_x, flip_y, mask_x, mask_y]
 
-color_picker_args = [width, display, flip_x, flip_x]
+color_picker_args = [width, display, flip_x, flip_y]
 
 object_filter_args = [bgr, hsv_range, minimum_pixels, draw_contour, draw_box, vertical_lines, horizontal_lines]
 
