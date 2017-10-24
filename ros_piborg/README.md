@@ -14,6 +14,8 @@ $ rosrun ros_piborg ros_color_picker.py -x -t /raspicam_node/image/compressed --
 
 $ rosrun ros_piborg direct_color_picker.py -x --http rosborg.local
 
+$ rosrun ros_piborg direct_single_object_filter.py -x -b "174, 56, 5" --http rosborg.local
+
 roslaunch raspicam_node camerav2_1280x960.launch
 
 Install *raspicam_node* as described [here](https://github.com/UbiquityRobotics/raspicam_node).
