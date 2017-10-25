@@ -1,6 +1,14 @@
 class GenericImageSource(object):
     def __init__(self):
-        self.stopped = False
+        self.__stopped = False
+
+    @property
+    def stopped(self):
+        return self.__stopped
+
+    @stopped.setter
+    def stopped(self, val):
+        self.__stopped = val
 
     def start(self):
         raise Exception("Should be implemented by subclass")

@@ -10,7 +10,6 @@ class FileImageSource(GenericImageSource):
     def __init__(self, filename):
         super(GenericImageSource, self).__init__()
         self.__cv2_img = cv2.imread(filename)
-        self.stopped = False
 
     def start(self):
         pass

@@ -5,17 +5,18 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage, Image
 
 import cli_args  as cli
+from generic_image_source import GenericImageSource
 
 
-class RosImageSource(object):
+class RosImageSource(GenericImageSource):
     args = [cli.image_topic, cli.compressed, cli.format]
 
     def __init__(self, topic, compressed, format):
+        super(GenericImageSource, self).__init__()
         self.__topic = topic
         self.__compressed = compressed
         self.__format = format
 
-        self.stopped = False
         self.__cond = Condition()
         self.__cv2_img = None
         self.__bridge = CvBridge()
@@ -27,7 +28,6 @@ class RosImageSource(object):
 
     def stop(self):
         self.stopped = True
-        pass
 
     def __image_cb(self, msg):
         self.__cond.acquire()
