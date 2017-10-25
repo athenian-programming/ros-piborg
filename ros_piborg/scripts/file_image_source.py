@@ -8,7 +8,7 @@ class FileImageSource(GenericImageSource):
     args = [cli.filename]
 
     def __init__(self, filename):
-        super(GenericImageSource, self).__init__()
+        super(FileImageSource, self).__init__()
         self.__cv2_img = cv2.imread(filename)
 
     def start(self):

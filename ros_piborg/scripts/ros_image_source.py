@@ -12,7 +12,7 @@ class RosImageSource(GenericImageSource):
     args = [cli.image_topic, cli.compressed, cli.format]
 
     def __init__(self, topic, compressed, format):
-        super(GenericImageSource, self).__init__()
+        super(RosImageSource, self).__init__()
         self.__topic = topic
         self.__compressed = compressed
         self.__format = format

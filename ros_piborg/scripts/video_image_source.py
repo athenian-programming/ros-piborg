@@ -16,7 +16,7 @@ class VideoImageSource(GenericImageSource):
     args = [cli.filename, cli.fps]
 
     def __init__(self, filename, fps_rate=30, width=600):
-        super(GenericImageSource, self).__init__()
+        super(VideoImageSource, self).__init__()
         self.__width = width
         self.__rate = rospy.Rate(fps_rate)
         self.__cond = Condition()
