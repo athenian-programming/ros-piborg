@@ -35,6 +35,7 @@ if __name__ == "__main__":
     rospy.init_node('video_single_object')
 
     logger.info("Setting up VideoImageSource")
+    rospy.loginfo("Setting up VideoImageSource")
     image_source = VideoImageSource(filename=args[FILENAME])
 
     logger.info("Setting up ImageServer")
