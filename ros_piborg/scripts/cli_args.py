@@ -10,7 +10,7 @@ from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_P
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
 from constants import HTTP_HOST, USB_PORT, OOR_SIZE
 from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SO_TOPIC
-from constants import MASK_X, MASK_Y, USB_ID, FILENAME
+from constants import MASK_X, MASK_Y, USB_ID, FILENAME, FPS
 from constants import MINIMUM_PIXELS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
 from constants import OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
 
@@ -51,6 +51,10 @@ def format(p):
 
 def filename(p):
     return p.add_argument("-f", "--filename", dest=FILENAME, required=True, help="Source filename")
+
+
+def fps(p):
+    return p.add_argument("--fps", dest=FPS, default=30, type=int, help="Frames per second [30]")
 
 def usb_camera(p):
     return p.add_argument("-u", "--usb", dest=USB_CAMERA, default=False, action="store_true",

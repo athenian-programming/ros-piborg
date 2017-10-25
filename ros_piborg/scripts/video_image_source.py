@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class VideoImageSource(object):
-    args = [cli.filename]
+    args = [cli.filename, cli.fps]
 
     def __init__(self, filename, fps_rate=30):
         self.__cond = Condition()
@@ -34,7 +34,7 @@ class VideoImageSource(object):
             if not ret:
                 logger.info("Breaking on null read")
                 break
-            self.__cv2_img = imutils.resize(self.__cv2_img, width=600)
+            self.__cv2_img = imutils.resize(self.__cv2_img, width=900)
 
             self.__cond.notify()
             self.__cond.release()
