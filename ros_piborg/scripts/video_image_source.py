@@ -1,3 +1,4 @@
+import logging
 from threading import Condition
 from threading import Thread
 
@@ -6,6 +7,8 @@ import imutils
 import rospy
 
 import cli_args  as cli
+
+logger = logging.getLogger(__name__)
 
 
 class VideoImageSource(object):
@@ -29,13 +32,16 @@ class VideoImageSource(object):
 
             ret, self.__cv2_img = self.__video.read()
             if not ret:
+                logger.info("Breaking on null read")
                 break
             self.__cv2_img = imutils.resize(self.__cv2_img, width=600)
+
             self.__cond.notify()
             self.__cond.release()
             self.__rate.sleep()
 
     def get_image(self):
+        logger.info("Getting Image")
         self.__cond.acquire()
         while self.__cv2_img is None:
             self.__cond.wait()

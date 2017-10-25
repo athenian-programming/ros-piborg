@@ -43,9 +43,9 @@ if __name__ == "__main__":
 
     tracker = ObjectTracker(image_source=image_source,
                             image_server=image_server,
+                            display=args[DISPLAY],
                             width=args[WIDTH],
                             middle_percent=args[MIDDLE_PERCENT],
-                            display=args[DISPLAY],
                             flip_x=args[FLIP_X],
                             flip_y=args[FLIP_Y],
                             mask_x=args[MASK_X],

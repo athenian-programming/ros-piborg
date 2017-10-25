@@ -169,6 +169,7 @@ class ImageServer(object):
         if self.__flask_launched or not self.enabled:
             return
 
+        logger.info("Starting ImageServer")
         Thread(target=self._start).start()
 
     def stop(self):
