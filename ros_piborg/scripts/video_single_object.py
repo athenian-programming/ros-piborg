@@ -31,6 +31,7 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
+    logger.info("Setting up ROS")
     rospy.init_node('video_single_object')
 
     logger.info("Setting up VideoImageSource")
