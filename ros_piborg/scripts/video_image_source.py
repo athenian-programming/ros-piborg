@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class VideoImageSource(object):
-    args = [cli.filename, cli.fps, cli.width]
+    args = [cli.filename, cli.fps]
 
     def __init__(self, filename, fps_rate=30, width=600):
         self.__width = width
