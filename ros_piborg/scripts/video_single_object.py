@@ -34,18 +34,17 @@ if __name__ == "__main__":
     logger.info("Setting up ROS")
     rospy.init_node('video_single_object')
 
-    logger.info("Setting up VideoImageSource")
     rospy.loginfo("Setting up VideoImageSource")
     image_source = VideoImageSource(filename=args[FILENAME])
 
-    logger.info("Setting up ImageServer")
+    rospy.loginfo("Setting up ImageServer")
     image_server = ImageServer(http_file=args[HTTP_FILE],
                                camera_name=args[CAMERA_NAME],
                                http_host=args[HTTP_HOST],
                                http_delay_secs=args[HTTP_DELAY_SECS],
                                http_verbose=args[HTTP_VERBOSE])
 
-    logger.info("Setting up ObjectTracker")
+    rospy.loginfo("Setting up ObjectTracker")
     tracker = ObjectTracker(image_source=image_source,
                             image_server=image_server,
                             display=args[DISPLAY],
@@ -56,7 +55,7 @@ if __name__ == "__main__":
                             mask_x=args[MASK_X],
                             mask_y=args[MASK_Y])
 
-    logger.info("Setting up SingleObjectFilter")
+    rospy.loginfo("Setting up SingleObjectFilter")
     obj_filter = SingleObjectFilter(tracker=tracker,
                                     so_topic=args[SO_TOPIC],
                                     bgr_color=args[BGR_COLOR],
@@ -67,6 +66,8 @@ if __name__ == "__main__":
                                     draw_box=args[DRAW_BOX],
                                     vertical_lines=args[VERTICAL_LINES],
                                     horizontal_lines=args[HORIZONTAL_LINES])
+
+    rospy.loginfo("Running")
     try:
         image_source.start()
         image_server.start()
