@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import logging
+
 import rospy
 
 import cli_args  as cli
@@ -11,6 +13,8 @@ from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, WIDTH, FLIP_X, FLIP_Y
 from image_server import ImageServer
 from ros_image_source import RosImageSource
 from utils import setup_logging
+
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     # Parse CLI args
@@ -51,4 +55,4 @@ if __name__ == "__main__":
         image_server.stop()
         image_source.stop()
 
-    rospy.loginfo("Exiting...")
+    logger = logging.getLogger(__name__)

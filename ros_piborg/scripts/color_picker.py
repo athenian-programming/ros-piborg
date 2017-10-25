@@ -6,7 +6,6 @@ import time
 import cv2
 import imutils
 import numpy as np
-import rospy
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -14,7 +13,6 @@ from opencv_utils import GREEN
 from opencv_utils import RED
 
 logger = logging.getLogger(__name__)
-
 
 class ColorPicker(object):
     args = [cli.width, cli.display, cli.flip_x, cli.flip_y]
@@ -90,13 +88,13 @@ class ColorPicker(object):
             cv2_img[self.__img_height - size:self.__img_height, self.__img_width - size:self.__img_width] = avg_color
 
             if self.__image_server is not None and self.__image_server.enabled and self.cnt % 30 == 0:
-                rospy.loginfo(self.__bgr_text)
+                logger.info(self.__bgr_text)
 
             self.cnt += 1
             return cv2_img
 
         except BaseException as e:
-            rospy.logerr("Unexpected error in main loop [{0}]".format(e), exc_info=True)
+            logger.error("Unexpected error in main loop [{0}]".format(e), exc_info=True)
             time.sleep(1)
 
     # Do not run this in a background thread because cv2.waitKey has to run in main thread
@@ -110,7 +108,7 @@ class ColorPicker(object):
                 if self.__display:
                     self.display_image(img)
             else:
-                rospy.sleep(0.1)
+                time.sleep(0.1)
 
     def display_image(self, image):
         # Display image

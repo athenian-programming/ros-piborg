@@ -15,6 +15,12 @@ $ rosrun ros_piborg ros_color_picker.py -x --img_topic /raspicam_node/image/comp
 $ rosrun ros_piborg local_color_picker.py -x --http rosborg.local
 
 $ rosrun ros_piborg local_single_object.py -x --bgr "174, 56, 5" --http rosborg.local
+$ rosrun ros_piborg local_single_object.py -x --bgr "174, 56, 5" --vertical_lines --horizontal_lines --draw_box --http rosborg.local
+
+python file_color_picker.py -f ../images/IMG_3248.jpg --display
+
+93, 211, 245
+
 
 roslaunch raspicam_node camerav2_1280x960.launch
 

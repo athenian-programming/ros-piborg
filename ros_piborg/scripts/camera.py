@@ -6,7 +6,6 @@ from utils import is_raspi
 
 logger = logging.getLogger(__name__)
 
-
 class Camera(object):
     def __init__(self, src=0, usb_camera=False, usb_port=-1, resolution=(320, 240), framerate=32):
         self.__usb_camera = usb_camera
@@ -50,3 +49,4 @@ class Camera(object):
             self.__vc.release()
 
         destroyAllWindows()
+

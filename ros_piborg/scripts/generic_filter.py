@@ -5,7 +5,6 @@ from contour_finder import ContourFinder
 
 logger = logging.getLogger(__name__)
 
-
 class GenericFilter(object):
     def __init__(self,
                  tracker,
@@ -64,13 +63,13 @@ class GenericFilter(object):
         self.prev_x, self.prev_y = -1, -1
 
     def reset_data(self):
-        raise Exception("Should be implemented by sub-class")
+        raise Exception("Should be implemented by subclass")
 
     def process_image(self, image):
-        raise Exception("Should be implemented by sub-class")
+        raise Exception("Should be implemented by subclass")
 
     def publish_data(self):
-        raise Exception("Should be implemented by sub-class")
+        raise Exception("Should be implemented by subclass")
 
     def markup_image(self, image):
-        raise Exception("Should be implemented by sub-class")
+        raise Exception("Should be implemented by subclass")
