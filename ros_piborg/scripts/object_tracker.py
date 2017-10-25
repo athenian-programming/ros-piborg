@@ -76,6 +76,9 @@ class ObjectTracker(object):
         try:
             cv2_img = self.__image_source.get_image()
 
+            if cv2_img is None:
+                return Nones
+
             cv2_img = imutils.resize(cv2_img, width=self.width)
 
             if self.__flip_x:
@@ -122,7 +125,6 @@ class ObjectTracker(object):
 
     # Do not run this in a background thread. cv2.waitKey has to run in main thread
     def run(self, *filters):
-
         self.__filters = filters
 
         if self.__filters:
