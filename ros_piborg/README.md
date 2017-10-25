@@ -19,9 +19,7 @@ $ rosrun ros_piborg local_single_object.py -x --bgr "174, 56, 5" --vertical_line
 
 python file_color_picker.py -f ../images/IMG_3248.jpg
 
-$ rosrun ros_piborg video_single_object.py --bgr "93, 211, 245" --vertical_lines --horizontal_lines --draw_box --http paris.local
-
-93, 211, 245
+$ rosrun ros_piborg video_single_object.py -f ros_piborg/images/track.m4v --bgr "93, 211, 245" --vertical_lines --horizontal_lines --draw_box --http paris.local
 
 
 roslaunch raspicam_node camerav2_1280x960.launch
