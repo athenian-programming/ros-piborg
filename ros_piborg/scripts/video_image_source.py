@@ -32,16 +32,17 @@ class VideoImageSource(GenericImageSource):
     def __read_image(self):
         while not self.stopped:
             self.__cond.acquire()
-
-            ret, self.__cv2_img = self.__video.read()
-            if not ret:
-                logger.info("Breaking on null read")
-                break
-            self.__cv2_img = imutils.resize(self.__cv2_img, width=self.__width)
-
-            self.__cond.notify()
-            self.__cond.release()
+            try:
+                ret, self.__cv2_img = self.__video.read()
+                if not ret:
+                    logger.info("Breaking on null read")
+                    break
+                self.__cv2_img = imutils.resize(self.__cv2_img, width=self.__width)
+            finally:
+                self.__cond.notify()
+                self.__cond.release()
             self.__rate.sleep()
+
         self.stopped = True
 
     def get_image(self):
