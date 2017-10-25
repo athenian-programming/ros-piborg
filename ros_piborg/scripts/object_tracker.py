@@ -129,7 +129,7 @@ class ObjectTracker(object):
             for f in self.__filters:
                 f.start()
 
-        while not self.__stopped:
+        while not self.__stopped and not self.__image_source.stopped:
             img = self.__read_image()
             if img is not None:
                 if self.__image_server is not None:

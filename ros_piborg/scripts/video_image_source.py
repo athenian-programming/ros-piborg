@@ -12,33 +12,37 @@ logger = logging.getLogger(__name__)
 
 
 class VideoImageSource(object):
-    args = [cli.filename, cli.fps]
+    args = [cli.filename, cli.fps, cli.width]
 
-    def __init__(self, filename, fps_rate=30):
-        self.__cond = Condition()
+    def __init__(self, filename, fps_rate=30, width=600):
+        self.__width = width
         self.__rate = rospy.Rate(fps_rate)
+        self.__cond = Condition()
         self.__cv2_img = None
+        self.stopped = False
         self.__video = cv2.VideoCapture(filename)
 
     def start(self):
         Thread(target=self.__read_image).start()
 
     def stop(self):
+        self.stopped = True
         pass
 
     def __read_image(self):
-        while True:
+        while not self.stopped:
             self.__cond.acquire()
 
             ret, self.__cv2_img = self.__video.read()
             if not ret:
                 logger.info("Breaking on null read")
                 break
-            self.__cv2_img = imutils.resize(self.__cv2_img, width=900)
+            self.__cv2_img = imutils.resize(self.__cv2_img, width=self.__width)
 
             self.__cond.notify()
             self.__cond.release()
             self.__rate.sleep()
+        self.stopped = True
 
     def get_image(self):
         logger.info("Getting Image")

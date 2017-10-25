@@ -15,6 +15,7 @@ class RosImageSource(object):
         self.__compressed = compressed
         self.__format = format
 
+        self.stopped = False
         self.__cond = Condition()
         self.__cv2_img = None
         self.__bridge = CvBridge()
@@ -25,6 +26,7 @@ class RosImageSource(object):
                          self.__image_cb)
 
     def stop(self):
+        self.stopped = True
         pass
 
     def __image_cb(self, msg):
