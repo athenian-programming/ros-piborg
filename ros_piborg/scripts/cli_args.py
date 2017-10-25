@@ -104,7 +104,7 @@ def min_pixels(p):
 
 
 def hsv_range(p):
-    return p.add_argument("--range", "--hsv_range", dest=HSV_RANGE, default=HSV_RANGE_DEFAULT, type=int,
+    return p.add_argument("--hsv", "--hsv_range", dest=HSV_RANGE, default=HSV_RANGE_DEFAULT, type=int,
                           help="HSV range [{0}]".format(HSV_RANGE_DEFAULT))
 
 
