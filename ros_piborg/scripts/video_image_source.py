@@ -27,7 +27,7 @@ class VideoImageSource(object):
         while True:
             self.__cond.acquire()
 
-            ret, self.__cv2_img = self.__video
+            ret, self.__cv2_img = self.__video.read()
             if not ret:
                 break
             self.__cv2_img = imutils.resize(self.__cv2_img, width=600)
