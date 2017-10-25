@@ -31,20 +31,16 @@ if __name__ == "__main__":
     # Setup logging
     setup_logging(level=args[LOG_LEVEL])
 
-    logger.info("Setting up ROS")
     rospy.init_node('video_single_object')
 
-    rospy.loginfo("Setting up VideoImageSource")
-    image_source = VideoImageSource(filename=args[FILENAME])
+    image_source = VideoImageSource(filename=args[FILENAME], fps_rate=3)
 
-    rospy.loginfo("Setting up ImageServer")
     image_server = ImageServer(http_file=args[HTTP_FILE],
                                camera_name=args[CAMERA_NAME],
                                http_host=args[HTTP_HOST],
                                http_delay_secs=args[HTTP_DELAY_SECS],
                                http_verbose=args[HTTP_VERBOSE])
 
-    rospy.loginfo("Setting up ObjectTracker")
     tracker = ObjectTracker(image_source=image_source,
                             image_server=image_server,
                             display=args[DISPLAY],
@@ -55,7 +51,6 @@ if __name__ == "__main__":
                             mask_x=args[MASK_X],
                             mask_y=args[MASK_Y])
 
-    rospy.loginfo("Setting up SingleObjectFilter")
     obj_filter = SingleObjectFilter(tracker=tracker,
                                     so_topic=args[SO_TOPIC],
                                     bgr_color=args[BGR_COLOR],
