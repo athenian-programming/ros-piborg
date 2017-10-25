@@ -15,7 +15,7 @@ from opencv_utils import RED
 logger = logging.getLogger(__name__)
 
 class ColorPicker(object):
-    args = [cli.width, cli.display, cli.flip_x, cli.flip_y]
+    args = [cli.width, cli.flip_x, cli.flip_y]
 
     roi_size = 24
     orig_roi_size = roi_size
@@ -24,19 +24,11 @@ class ColorPicker(object):
     x_adj = 0
     y_adj = 0
 
-    def __init__(self,
-                 image_source,
-                 image_server,
-                 width,
-                 flip_x,
-                 flip_y,
-                 display):
+    def __init__(self, image_source, width, flip_x, flip_y):
         self.__image_source = image_source
-        self.__image_server = image_server
         self.__width = width
         self.__flip_x = flip_x
         self.__flip_y = flip_y
-        self.__display = display
         self.__orig_width = self.__width
         self.__roi_x = 0
         self.__roi_y = 0
@@ -87,7 +79,7 @@ class ColorPicker(object):
             size = int(self.__img_width * 0.20)
             cv2_img[self.__img_height - size:self.__img_height, self.__img_width - size:self.__img_width] = avg_color
 
-            if self.__image_server is not None and self.__image_server.enabled and self.cnt % 30 == 0:
+            if self.cnt % 30 == 0:
                 logger.info(self.__bgr_text)
 
             self.cnt += 1
@@ -102,11 +94,7 @@ class ColorPicker(object):
         while not self.__stopped:
             img = self.__read_image()
             if img is not None:
-                if self.__image_server is not None:
-                    self.__image_server.image = img
-
-                if self.__display:
-                    self.display_image(img)
+                self.display_image(img)
             else:
                 time.sleep(0.1)
 
