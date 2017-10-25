@@ -17,7 +17,6 @@ class PiBorg(object):
     __maxPower = 1.0  # if __voltageOut > __voltageIn else __voltageOut / float(__voltageIn)
 
     def __init__(self):
-
         self.__max_linear = float(rospy.get_param('max_linear', '1.5'))
         self.__max_angular = float(rospy.get_param('max_angular', '0.4'))
         self.__zero_slop = float(rospy.get_param('zero_slop', '0.01'))

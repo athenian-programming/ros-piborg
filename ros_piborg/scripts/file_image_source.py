@@ -1,14 +1,22 @@
 import cv2
 
 import cli_args  as cli
+from generic_image_source import GenericImageSource
 
 
-class FileImageSource(object):
+class FileImageSource(GenericImageSource):
     args = [cli.filename]
 
     def __init__(self, filename):
+        super(GenericImageSource, self).__init__()
         self.__cv2_img = cv2.imread(filename)
         self.stopped = False
+
+    def start(self):
+        pass
+
+    def stop(self):
+        pass
 
     def get_image(self):
         return self.__cv2_img

@@ -24,8 +24,8 @@ if __name__ == "__main__":
     # Parse CLI args
     args = setup_cli_args(VideoImageSource.args,
                           ImageServer.args, cli.camera_name_optional,
-                          SingleObjectFilter.args,
                           ObjectTracker.args,
+                          SingleObjectFilter.args,
                           cli.log_level)
 
     # Setup logging

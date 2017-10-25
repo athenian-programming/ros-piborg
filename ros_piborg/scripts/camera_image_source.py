@@ -4,12 +4,14 @@ from threading import Thread
 
 import cli_args  as cli
 from camera import Camera
+from generic_image_source import GenericImageSource
 
 
-class CameraImageSource(object):
+class CameraImageSource(GenericImageSource):
     args = [cli.usb_camera, cli.usb_port]
 
     def __init__(self, usb_camera, usb_port):
+        super(GenericImageSource, self).__init__()
         self.__cond = Condition()
         self.__cv2_img = None
         self.__cam = Camera(usb_camera=usb_camera, usb_port=usb_port)

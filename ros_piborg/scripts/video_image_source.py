@@ -7,19 +7,20 @@ import imutils
 import rospy
 
 import cli_args  as cli
+from generic_image_source import GenericImageSource
 
 logger = logging.getLogger(__name__)
 
 
-class VideoImageSource(object):
+class VideoImageSource(GenericImageSource):
     args = [cli.filename, cli.fps]
 
     def __init__(self, filename, fps_rate=30, width=600):
+        super(GenericImageSource, self).__init__()
         self.__width = width
         self.__rate = rospy.Rate(fps_rate)
         self.__cond = Condition()
         self.__cv2_img = None
-        self.stopped = False
         self.__video = cv2.VideoCapture(filename)
 
     def start(self):
@@ -27,7 +28,6 @@ class VideoImageSource(object):
 
     def stop(self):
         self.stopped = True
-        pass
 
     def __read_image(self):
         while not self.stopped:
