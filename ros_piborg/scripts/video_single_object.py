@@ -67,6 +67,7 @@ if __name__ == "__main__":
         image_source.start()
         image_server.start()
         tracker.run(obj_filter)
+        rospy.loginfo("Done running")
     except KeyboardInterrupt:
         pass
     finally:
@@ -74,4 +75,4 @@ if __name__ == "__main__":
         image_server.stop()
         image_source.stop()
 
-    logger.info("Exiting...")
+    rospy.loginfo("Exiting...")
