@@ -30,7 +30,7 @@ class MultiObjectFilter(GenericFilter):
         self.reset_data()
         self.height, self.width = image.shape[:2]
 
-        self.contours = self.contour_finder.get_max_contours(image, count=5)
+        self.contours = self.contour_finder.get_max_contours(image, count=self.__max_objects)
 
         if self.contours is not None:
             self.moments = [get_moment(i) for i in self.contours]

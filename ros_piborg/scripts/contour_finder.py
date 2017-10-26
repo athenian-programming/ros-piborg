@@ -49,7 +49,6 @@ class ContourFinder(object):
             return retval
         else:
             contours = cv2.findContours(grayscale, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
-
             eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
             val = sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True)[:count]
             return val if val else None
