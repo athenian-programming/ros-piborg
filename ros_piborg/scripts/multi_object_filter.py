@@ -70,7 +70,7 @@ class MultiObjectFilter(GenericFilter):
 
             m, b = polyfit(all_x, all_y, 1)
 
-            cv2.line(image, (0, b), (self.width, (self.width * m) + b), GREEN, 2)
+            cv2.line(image, (0, int(b)), (self.width, int((self.width * m) + b)), GREEN, 2)
 
 
         # Draw the alignment lines
