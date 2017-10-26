@@ -8,7 +8,7 @@ import cli_args  as cli
 from cli_args import LOG_LEVEL
 from cli_args import setup_cli_args
 from constants import DISPLAY, WIDTH, MIDDLE_PERCENT
-from constants import DRAW_CONTOUR, DRAW_BOX, MAXIMUM_OBJECTS
+from constants import DRAW_LINE, DRAW_CONTOUR, DRAW_BOX, MAXIMUM_OBJECTS
 from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
 from constants import MASK_X, MASK_Y, BGR_COLOR
 from constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, FILENAME, FPS, HTTP_HOST, SO_TOPIC
@@ -58,6 +58,7 @@ if __name__ == "__main__":
                                    hsv_range=args[HSV_RANGE],
                                    minimum_pixels=args[MINIMUM_PIXELS],
                                    display_text=True,
+                                   draw_line=args[DRAW_LINE],
                                    draw_contour=args[DRAW_CONTOUR],
                                    draw_box=args[DRAW_BOX])
 

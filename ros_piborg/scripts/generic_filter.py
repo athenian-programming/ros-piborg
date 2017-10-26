@@ -12,6 +12,7 @@ class GenericFilter(object):
                  hsv_range=HSV_RANGE_DEFAULT,
                  minimum_pixels=MINIMUM_PIXELS_DEFAULT,
                  display_text=False,
+                 draw_line=False,
                  draw_contour=False,
                  draw_box=False,
                  vertical_lines=False,
@@ -19,6 +20,7 @@ class GenericFilter(object):
                  predicate=None):
         self.tracker = tracker
         self.display_text = display_text
+        self.draw_line = draw_line
         self.draw_contour = draw_contour
         self.draw_box = draw_box
         self.vertical_lines = vertical_lines

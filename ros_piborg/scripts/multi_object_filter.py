@@ -10,7 +10,8 @@ from opencv_utils import get_moment
 
 
 class MultiObjectFilter(GenericFilter):
-    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.max_objects]
+    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels,
+            cli.draw_line, cli.draw_contour, cli.draw_box, cli.max_objects]
 
     def __init__(self,
                  tracker,
@@ -68,9 +69,9 @@ class MultiObjectFilter(GenericFilter):
                 cv2.circle(image, (center_x, center_y), 4, RED, -1)
                 # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
-            m, b = polyfit(all_x, all_y, 1)
-
-            cv2.line(image, (0, int(b)), (self.width, int((self.width * m) + b)), GREEN, 2)
+            if self.draw_line:
+                m, b = polyfit(all_x, all_y, 1)
+                cv2.line(image, (0, int(b)), (self.width, int((self.width * m) + b)), BLUE, 2)
 
 
         # Draw the alignment lines

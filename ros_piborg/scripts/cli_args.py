@@ -114,6 +114,10 @@ def hsv_range(p):
                           help="HSV range [{0}]".format(HSV_RANGE_DEFAULT))
 
 
+def draw_line(p):
+    return p.add_argument("--draw_line", "--line", dest=DRAW_LINE, default=False, action="store_true",
+                          help="Draw fitted line [false]")
+
 def draw_contour(p):
     return p.add_argument("--draw_contour", "--contour", dest=DRAW_CONTOUR, default=False, action="store_true",
                           help="Draw contour box [false]")
