@@ -12,7 +12,8 @@ from opencv_utils import get_moment
 class MultiObjectFilter(GenericFilter):
     args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.max_objects]
 
-    def __init__(self, tracker,
+    def __init__(self,
+                 tracker,
                  so_topic,
                  maximum_objects=MAXIMUM_OBJECTS_DEFAULT,
                  *args, **kwargs):

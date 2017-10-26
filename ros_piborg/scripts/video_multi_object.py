@@ -53,13 +53,13 @@ if __name__ == "__main__":
 
     obj_filter = MultiObjectFilter(tracker=tracker,
                                    so_topic=args[SO_TOPIC],
+                                   maximum_objects=args[MAXIMUM_OBJECTS],
                                    bgr_color=args[BGR_COLOR],
                                    hsv_range=args[HSV_RANGE],
                                    minimum_pixels=args[MINIMUM_PIXELS],
                                    display_text=True,
                                    draw_contour=args[DRAW_CONTOUR],
-                                   draw_box=args[DRAW_BOX],
-                                   maximum_objects=args[MAXIMUM_OBJECTS])
+                                   draw_box=args[DRAW_BOX])
 
     rospy.loginfo("Running")
 
