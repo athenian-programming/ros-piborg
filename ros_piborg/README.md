@@ -21,9 +21,9 @@ python file_color_picker.py -f ../images/IMG_3248.jpg
 
 $ rosrun ros_piborg video_single_object.py -f ros_piborg/images/track.m4v --bgr "93, 211, 245" --draw_box --draw_contour --http paris.local
 
-$ rosrun ros_piborg video_multi_object.py -f ~/catkin_ws/src/ros-piborg/ros_piborg/images/track.m4v --bgr "93, 211, 245" --draw_box --draw_contour --http paris.local --hsv 5 --max_objects 5 --min_pixels 1000
+$ rosrun ros_piborg video_multi_object.py -f ~/catkin_ws/src/ros-piborg/ros_piborg/images/track.m4v --bgr "93, 211, 245" --draw_box --draw_contour --http paris.local --hsv 5 --max_objects 5 --min_pixels 1000 --fps 10 --width 1200
 
 
 roslaunch raspicam_node camerav2_1280x960.launch
 
-Install *raspicam_node* as described [here](https://github.com/UbiquityRobotics/raspicam_node).
+Install *raspicam_node* as described [here](https://github.com/UbiquityRobotics/raspicam_node).s

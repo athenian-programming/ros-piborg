@@ -45,8 +45,9 @@ class ContourFinder(object):
             for i in retval:
                 if contains(i, get_center(val)):
                     continue
+            retval.append(val)
             if len(retval) == count:
-                return retval
+                break
 
         return retval
 
