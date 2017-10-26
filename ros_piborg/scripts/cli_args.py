@@ -6,12 +6,12 @@ from constants import DEVICE_ID, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import DRAW_CONTOUR, DRAW_BOX
 from constants import HSV_RANGE, WIDTH, USB_CAMERA, BGR_COLOR, MIDDLE_PERCENT, FLIP_X, FLIP_Y
 from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD
-from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_PIXELS, DISPLAY
+from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MAXIMUM_OBJECTS, DISPLAY
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
 from constants import HTTP_HOST, USB_PORT, OOR_SIZE
 from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SO_TOPIC
 from constants import MASK_X, MASK_Y, USB_ID, FILENAME, FPS
-from constants import MINIMUM_PIXELS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
+from constants import MINIMUM_PIXELS_DEFAULT, MAXIMUM_OBJECTS_DEFAULT, WIDTH_DEFAULT, MIDDLE_PERCENT_DEFAULT
 from constants import OOR_SIZE_DEFAULT, OOR_TIME, OOR_TIME_DEFAULT, OOR_UPPER, OOR_UPPER_DEFAULT
 
 
@@ -56,6 +56,7 @@ def filename(p):
 def fps(p):
     return p.add_argument("--fps", dest=FPS, default=30, type=int, help="Frames per second [30]")
 
+
 def usb_camera(p):
     return p.add_argument("-u", "--usb", dest=USB_CAMERA, default=False, action="store_true",
                           help="Use USB camera [false]")
@@ -98,9 +99,13 @@ def middle_percent(p):
 
 
 def min_pixels(p):
-    return p.add_argument("--min", "--min_pixels", dest=MINIMUM_PIXELS, default=MINIMUM_PIXELS_DEFAULT,
-                          type=int,
+    return p.add_argument("--min_pixels", dest=MAXIMUM_OBJECTS, default=MINIMUM_PIXELS_DEFAULT, type=int,
                           help="Minimum pixel area [{0}]".format(MINIMUM_PIXELS_DEFAULT))
+
+
+def max_objects(p):
+    return p.add_argument("--max_objects", dest=MAXIMUM_OBJECTS, default=MAXIMUM_OBJECTS_DEFAULT, type=int,
+                          help="Maximum objects [{0}]".format(MAXIMUM_OBJECTS_DEFAULT))
 
 
 def hsv_range(p):

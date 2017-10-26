@@ -3,17 +3,21 @@ import rospy
 
 import cli_args  as cli
 import opencv_defaults as defs
+from constants import MAXIMUM_OBJECTS_DEFAULT
 from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
 
 
 class MultiObjectFilter(GenericFilter):
-    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour,
-            cli.draw_box, cli.vert_lines, cli.horiz_lines]
+    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour, cli.draw_box, cli.max_objects]
 
-    def __init__(self, tracker, so_topic, *args, **kwargs):
+    def __init__(self, tracker,
+                 so_topic,
+                 maximum_objects=MAXIMUM_OBJECTS_DEFAULT,
+                 *args, **kwargs):
         super(MultiObjectFilter, self).__init__(tracker, *args, **kwargs)
+        self.__max_objects = maximum_objects
         self.moments = None
         self.contours = None
         self.height, self.width = None, None
@@ -60,7 +64,7 @@ class MultiObjectFilter(GenericFilter):
                 # Draw center
                 cv2.circle(image, (self.moments[i][2], self.moments[i][3]), 4, RED, -1)
 
-                #text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
+                # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
         # Draw the alignment lines
         # if self.vertical_lines:
