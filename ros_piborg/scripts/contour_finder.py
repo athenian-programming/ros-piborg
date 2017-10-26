@@ -43,8 +43,9 @@ class ContourFinder(object):
         eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
         retval = []
         for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
+            center = get_center(val)
             for i in retval:
-                if contains(i, get_center(val)):
+                if contains(i, center):
                     rospy.loginfo("Throwing out point")
                     break
             retval.append(val)
