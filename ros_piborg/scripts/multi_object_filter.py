@@ -3,7 +3,7 @@ import cv2
 import cli_args  as cli
 import opencv_defaults as defs
 from generic_filter import GenericFilter
-from opencv_utils import BLUE, GREEN, RED, YELLOW
+from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
 
 
@@ -27,8 +27,6 @@ class MultiObjectFilter(GenericFilter):
 
         self.contours = self.contour_finder.get_max_contours(image, count=20000)
 
-        # Check for > 2 in case one of the targets is divided.
-        # The calculation will be off, but something will be better than nothing
         if self.contours is not None:
             for i in range(len(self.contours)):
                 self.moments.append(get_moment(self.contours[i]))
@@ -41,9 +39,6 @@ class MultiObjectFilter(GenericFilter):
         pass
 
     def markup_image(self, image):
-        mid_x, mid_y = self.width / 2, self.height / 2
-        mid_inc = int(self.middle_inc)
-
         # x_in_middle = mid_x - mid_inc <= self.avg_x <= mid_x + mid_inc
         # y_in_middle = mid_y - mid_inc <= self.avg_y <= mid_y + mid_inc
         # x_color = GREEN if x_in_middle else RED if self.avg_x == -1 else BLUE
@@ -66,7 +61,7 @@ class MultiObjectFilter(GenericFilter):
                     cv2.drawContours(image, [self.contours[i]], -1, GREEN, 2)
 
                 # Draw center
-                cv2.circle(image, (self.x, self.y), 4, YELLOW, -1)
+                cv2.circle(image, (self.moments[2], self.moments[3]), 4, RED, -1)
 
                 #text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
