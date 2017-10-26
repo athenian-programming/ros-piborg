@@ -39,11 +39,6 @@ class MultiObjectFilter(GenericFilter):
         pass
 
     def markup_image(self, image):
-        # x_in_middle = mid_x - mid_inc <= self.avg_x <= mid_x + mid_inc
-        # y_in_middle = mid_y - mid_inc <= self.avg_y <= mid_y + mid_inc
-        # x_color = GREEN if x_in_middle else RED if self.avg_x == -1 else BLUE
-        #y_color = GREEN if y_in_middle else RED if self.avg_y == -1 else BLUE
-
         if not self.tracker.markup_image:
             return
 
@@ -61,7 +56,7 @@ class MultiObjectFilter(GenericFilter):
                     cv2.drawContours(image, [self.contours[i]], -1, GREEN, 2)
 
                 # Draw center
-                cv2.circle(image, (self.moments[2], self.moments[3]), 4, RED, -1)
+                cv2.circle(image, (self.moments[i][2], self.moments[i][3]), 4, RED, -1)
 
                 #text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
