@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import rospy
 
 from constants import MINIMUM_PIXELS_DEFAULT, HSV_RANGE_DEFAULT
 from opencv_utils import contour_slope_degrees, contains, get_center
@@ -44,6 +45,7 @@ class ContourFinder(object):
         for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
             for i in retval:
                 if contains(i, get_center(val)):
+                    rospy.loginfo("Throwing out point")
                     continue
             retval.append(val)
             if len(retval) == count:
