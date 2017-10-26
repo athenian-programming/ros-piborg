@@ -36,7 +36,7 @@ class ContourFinder(object):
         grayscale = cv2.cvtColor(in_range_result, cv2.COLOR_BGR2GRAY)
 
         # Get all contours
-        if False:
+        if True:
             contours = cv2.findContours(grayscale, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[1]
             # Return max contours that are not overlapping
             eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
