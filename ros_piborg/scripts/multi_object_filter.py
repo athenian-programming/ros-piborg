@@ -11,7 +11,7 @@ class MultiObjectFilter(GenericFilter):
     args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour,
             cli.draw_box, cli.vert_lines, cli.horiz_lines]
 
-    def __init__(self, tracker, *args, **kwargs):
+    def __init__(self, tracker, so_topic, *args, **kwargs):
         super(MultiObjectFilter, self).__init__(tracker, *args, **kwargs)
         self.moments = None
         self.contours = None
