@@ -6,7 +6,7 @@ from constants import DEVICE_ID, VERTICAL_LINES, HORIZONTAL_LINES
 from constants import DRAW_CONTOUR, DRAW_BOX
 from constants import HSV_RANGE, WIDTH, USB_CAMERA, BGR_COLOR, MIDDLE_PERCENT, FLIP_X, FLIP_Y
 from constants import HSV_RANGE_DEFAULT, SERIAL_PORT_DEFAULT, DEFAULT_BAUD
-from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MAXIMUM_OBJECTS, DISPLAY
+from constants import HTTP_DELAY_SECS, HTTP_FILE, LOG_LEVEL, LOG_FILE, MINIMUM_PIXELS, DISPLAY
 from constants import HTTP_DELAY_SECS_DEFAULT, HTTP_HOST_DEFAULT, HTTP_TEMPLATE_DEFAULT
 from constants import HTTP_HOST, USB_PORT, OOR_SIZE
 from constants import IMAGE_TOPIC, COMPRESSED, FORMAT, SO_TOPIC
@@ -99,7 +99,7 @@ def middle_percent(p):
 
 
 def min_pixels(p):
-    return p.add_argument("--min_pixels", dest=MAXIMUM_OBJECTS, default=MINIMUM_PIXELS_DEFAULT, type=int,
+    return p.add_argument("--min_pixels", dest=MINIMUM_PIXELS, default=MINIMUM_PIXELS_DEFAULT, type=int,
                           help="Minimum pixel area [{0}]".format(MINIMUM_PIXELS_DEFAULT))
 
 
