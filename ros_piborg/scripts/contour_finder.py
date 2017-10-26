@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 from constants import MINIMUM_PIXELS_DEFAULT, HSV_RANGE_DEFAULT
-from opencv_utils import contour_slope_degrees
+from opencv_utils import contour_slope_degrees, contains, get_center
 
 
 class ContourFinder(object):
@@ -38,15 +38,17 @@ class ContourFinder(object):
         # Get all contours
         contours = cv2.findContours(grayscale, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[1]
 
-        # cv2.imshow("HSV", hsv_image)
-        # cv2.imshow("Mask", in_range_mask)
-        # cv2.imshow("Res", in_range_result)
-        # cv2.imshow("Grayscale", grayscale)
-
         # Return max contours
         eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
-        val = sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True)[:count]
-        return val if val else None
+        retval = []
+        for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
+            for i in retval:
+                if contains(i, get_center(val)):
+                    continue
+            if len(retval) == count:
+                return retval
+
+        return retval
 
     def get_max_vertical_contours(self, image, lower=None, upper=None, count=1):
         # Convert from BGR to HSV colorspace
@@ -65,11 +67,6 @@ class ContourFinder(object):
 
         # Get all contours
         contours = cv2.findContours(grayscale, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[1]
-
-        # cv2.imshow("HSV", hsv_image)
-        # cv2.imshow("Mask", in_range_mask)
-        # cv2.imshow("Res", in_range_result)
-        # cv2.imshow("Grayscale", grayscale)
 
         verticals = []
         for c in contours:
