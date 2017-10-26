@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-import rospy
 
 from constants import MINIMUM_PIXELS_DEFAULT, HSV_RANGE_DEFAULT
-from opencv_utils import contour_slope_degrees, contains, get_center
+from opencv_utils import contour_slope_degrees, get_center, contains_in_list
 
 
 class ContourFinder(object):
@@ -43,11 +42,8 @@ class ContourFinder(object):
         eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
         retval = []
         for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
-            center = get_center(val)
-            for i in retval:
-                if contains(i, center):
-                    rospy.loginfo("Throwing out point")
-                    break
+            if contains_in_list(retval, get_center(val)):
+                continue
             retval.append(val)
             if len(retval) == count:
                 break

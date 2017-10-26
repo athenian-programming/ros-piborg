@@ -29,6 +29,13 @@ def get_center(contour):
 def contains(contour, point):
     return cv2.pointPolygonTest(contour, point, False) != -1
 
+
+def contains_in_list(contour_list, point):
+    for i in contour_list:
+        if contains(i, point):
+            return True
+    return False
+
 def write_image(frame, file_name=None, log_info=False):
     fname = file_name if file_name else "ct-{0}.png".format(datetime.datetime.now().strftime("%H-%M-%S"))
     cv2.imwrite(file_name, frame)
