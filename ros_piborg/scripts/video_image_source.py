@@ -45,12 +45,11 @@ class VideoImageSource(GenericImageSource):
             self.__rate.sleep()
 
 
+
     def get_image(self):
-        if self.stopped:
-            return None
         self.__cond.acquire()
-        while self.__cv2_img is None:
-            self.__cond.wait()
+        while self.__cv2_img is None and not self.stopped:
+            self.__cond.wait(timeout=1)
         retval = self.__cv2_img
         self.__cv2_img = None
         self.__cond.release()
