@@ -1,5 +1,4 @@
 import cv2
-import rospy
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -34,9 +33,7 @@ class MultiObjectFilter(GenericFilter):
         self.contours = self.contour_finder.get_max_contours(image, count=5)
 
         if self.contours is not None:
-            for i in range(len(self.contours)):
-                self.moments.append(get_moment(self.contours[i]))
-                rospy.loginfo("Area: {0}".format(self.moments[i][1]))
+            self.moments = [get_moment(self.contours[i]) for i in self.contours]
 
     def publish_data(self):
         # Write location if it is different from previous value written
