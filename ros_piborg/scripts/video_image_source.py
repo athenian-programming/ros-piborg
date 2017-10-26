@@ -35,7 +35,6 @@ class VideoImageSource(GenericImageSource):
             try:
                 ret, self.__cv2_img = self.__video.read()
                 if not ret:
-                    rospy.loginfo("Breaking on null read")
                     self.stopped = True
                     break
                 else:
@@ -49,7 +48,6 @@ class VideoImageSource(GenericImageSource):
     def get_image(self):
         if self.stopped:
             return None
-        rospy.loginfo("Getting Image")
         self.__cond.acquire()
         while self.__cv2_img is None:
             self.__cond.wait()

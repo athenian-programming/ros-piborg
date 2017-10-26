@@ -17,16 +17,7 @@ BLACK = np.uint8((0, 0, 0))
 class ObjectTracker(object):
     args = [cli.width, cli.middle_percent, cli.display, cli.flip_x, cli.flip_y, cli.mask_x, cli.mask_y]
 
-    def __init__(self,
-                 image_source,
-                 image_server,
-                 width,
-                 middle_percent,
-                 display,
-                 flip_x,
-                 flip_y,
-                 mask_x,
-                 mask_y):
+    def __init__(self, image_source, image_server, width, middle_percent, display, flip_x, flip_y, mask_x, mask_y):
         self.__image_source = image_source
         self.__image_server = image_server
         self.__width = width
@@ -77,7 +68,7 @@ class ObjectTracker(object):
             cv2_img = self.__image_source.get_image()
 
             if cv2_img is None:
-                return Nones
+                return None
 
             cv2_img = imutils.resize(cv2_img, width=self.width)
 

@@ -63,11 +63,11 @@ if __name__ == "__main__":
                                     horizontal_lines=args[HORIZONTAL_LINES])
 
     rospy.loginfo("Running")
+
     try:
         image_source.start()
         image_server.start()
         tracker.run(obj_filter)
-        rospy.loginfo("Done running")
     except KeyboardInterrupt:
         pass
     finally:

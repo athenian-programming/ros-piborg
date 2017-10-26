@@ -13,8 +13,8 @@ from constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
 from constants import MASK_X, MASK_Y, BGR_COLOR
 from constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, FILENAME, FPS, HTTP_HOST, SO_TOPIC
 from image_server import ImageServer
+from multi_object_filter import MultiObjectFilter
 from object_tracker import ObjectTracker
-from single_object_filter import SingleObjectFilter
 from utils import setup_logging
 from video_image_source import VideoImageSource
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     args = setup_cli_args(VideoImageSource.args,
                           ImageServer.args, cli.camera_name_optional,
                           ObjectTracker.args,
-                          SingleObjectFilter.args,
+                          MultiObjectFilter.args,
                           cli.log_level)
 
     # Setup logging
@@ -51,23 +51,23 @@ if __name__ == "__main__":
                             mask_x=args[MASK_X],
                             mask_y=args[MASK_Y])
 
-    obj_filter = SingleObjectFilter(tracker=tracker,
-                                    so_topic=args[SO_TOPIC],
-                                    bgr_color=args[BGR_COLOR],
-                                    hsv_range=args[HSV_RANGE],
-                                    minimum_pixels=args[MINIMUM_PIXELS],
-                                    display_text=True,
-                                    draw_contour=args[DRAW_CONTOUR],
-                                    draw_box=args[DRAW_BOX],
-                                    vertical_lines=args[VERTICAL_LINES],
-                                    horizontal_lines=args[HORIZONTAL_LINES])
+    obj_filter = MultiObjectFilter(tracker=tracker,
+                                   so_topic=args[SO_TOPIC],
+                                   bgr_color=args[BGR_COLOR],
+                                   hsv_range=args[HSV_RANGE],
+                                   minimum_pixels=args[MINIMUM_PIXELS],
+                                   display_text=True,
+                                   draw_contour=args[DRAW_CONTOUR],
+                                   draw_box=args[DRAW_BOX],
+                                   vertical_lines=args[VERTICAL_LINES],
+                                   horizontal_lines=args[HORIZONTAL_LINES])
 
     rospy.loginfo("Running")
+
     try:
         image_source.start()
         image_server.start()
         tracker.run(obj_filter)
-        rospy.loginfo("Done running")
     except KeyboardInterrupt:
         pass
     finally:
