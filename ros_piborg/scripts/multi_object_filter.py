@@ -33,7 +33,7 @@ class MultiObjectFilter(GenericFilter):
         self.contours = self.contour_finder.get_max_contours(image, count=5)
 
         if self.contours is not None:
-            self.moments = [get_moment(self.contours[i]) for i in self.contours]
+            self.moments = [get_moment(i) for i in self.contours]
 
     def publish_data(self):
         # Write location if it is different from previous value written
