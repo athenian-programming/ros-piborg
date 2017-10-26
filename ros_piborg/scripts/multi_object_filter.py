@@ -1,4 +1,5 @@
 import cv2
+from pylab import polyfit
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -29,9 +30,7 @@ class MultiObjectFilter(GenericFilter):
     def process_image(self, image):
         self.reset_data()
         self.height, self.width = image.shape[:2]
-
         self.contours = self.contour_finder.get_max_contours(image, count=self.__max_objects)
-
         if self.contours is not None:
             self.moments = [get_moment(i) for i in self.contours]
 
@@ -50,19 +49,29 @@ class MultiObjectFilter(GenericFilter):
         text += " {0}%".format(self.tracker.middle_percent)
 
         if self.contours is not None:
+            all_x = []
+            all_y = []
             for i in range(len(self.contours)):
-                x, y, w, h = cv2.boundingRect(self.contours[i])
+                box_x, box_y, box_w, box_h = cv2.boundingRect(self.contours[i])
+                center_x = self.moments[i][2]
+                center_y = self.moments[i][3]
+                all_x.append(center_x)
+                all_y.append(center_y)
 
                 if self.draw_box:
-                    cv2.rectangle(image, (x, y), (x + w, y + h), BLUE, 2)
+                    cv2.rectangle(image, (box_x, box_y), (box_x + box_w, box_y + box_h), BLUE, 2)
 
                 if self.draw_contour:
                     cv2.drawContours(image, [self.contours[i]], -1, GREEN, 2)
 
                 # Draw center
-                cv2.circle(image, (self.moments[i][2], self.moments[i][3]), 4, RED, -1)
-
+                cv2.circle(image, (center_x, center_y), 4, RED, -1)
                 # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
+
+            m, b = polyfit(all_x, all_y, 1)
+
+            cv2.line(image, (0, b), (self.width, (self.width * m) + b), GREEN, 2)
+
 
         # Draw the alignment lines
         # if self.vertical_lines:

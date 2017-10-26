@@ -72,4 +72,4 @@ if __name__ == "__main__":
         image_server.stop()
         image_source.stop()
 
-    logger.info("Exiting...")
+    logger.info("Exiting")

@@ -30,4 +30,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         pass
 
-    logger.info("Exiting...")
+    logger.info("Exiting")

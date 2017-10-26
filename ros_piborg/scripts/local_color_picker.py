@@ -33,4 +33,4 @@ if __name__ == "__main__":
     finally:
         image_source.stop()
 
-    logger.info("Exiting...")
+    logger.info("Exiting")
