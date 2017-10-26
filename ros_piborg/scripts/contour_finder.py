@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 from constants import MINIMUM_PIXELS_DEFAULT, HSV_RANGE_DEFAULT
-from opencv_utils import contour_slope_degrees, get_center, contains_in_list
+from opencv_utils import contour_slope_degrees
 
 
 class ContourFinder(object):
@@ -36,19 +36,22 @@ class ContourFinder(object):
         grayscale = cv2.cvtColor(in_range_result, cv2.COLOR_BGR2GRAY)
 
         # Get all contours
-        contours = cv2.findContours(grayscale, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[1]
+        # contours = cv2.findContours(grayscale, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[1]
+        contours = cv2.findContours(grayscale, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
-        # Return max contours
         eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
-        retval = []
-        for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
-            if contains_in_list(retval, get_center(val)):
-                continue
-            retval.append(val)
-            if len(retval) == count:
-                break
+        val = sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True)[:count]
+        return val if val else None
 
-        return retval
+        # Return max contours that are not overlapping
+        # eligible = [c for c in contours if cv2.moments(c)["m00"] >= self.__minimum_pixels]
+        # retval = []
+        # for val in sorted(eligible, key=lambda v: cv2.moments(v)["m00"], reverse=True):
+        #    if not contains_in_list(retval, get_center(val)):
+        #        retval.append(val)
+        #        if len(retval) == count:
+        #            break
+        #return retval
 
     def get_max_vertical_contours(self, image, lower=None, upper=None, count=1):
         # Convert from BGR to HSV colorspace
