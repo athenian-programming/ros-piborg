@@ -11,7 +11,7 @@ class CameraImageSource(GenericImageSource):
     args = [cli.usb_camera, cli.usb_port]
 
     def __init__(self, usb_camera, usb_port):
-        super(GenericImageSource, self).__init__()
+        super(CameraImageSource, self).__init__()
         self.__cond = Condition()
         self.__cv2_img = None
         self.__cam = Camera(usb_camera=usb_camera, usb_port=usb_port)
