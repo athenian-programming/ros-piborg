@@ -9,10 +9,6 @@ from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
 
 
-# import matplotlib
-# matplotlib.use('Agg')
-
-
 class MultiObjectFilter(GenericFilter):
     args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels,
             cli.draw_line, cli.draw_contour, cli.draw_box, cli.max_objects]

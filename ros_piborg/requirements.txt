@@ -1,4 +1,6 @@
 imutils
 requests
 flask
-matplotlib
+
+# On Linux do not use matplotlib
+# Instead use: sudo apt-get install python-matplotlib
