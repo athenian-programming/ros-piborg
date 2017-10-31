@@ -1,8 +1,4 @@
 import cv2
-import matplotlib
-
-matplotlib.use('Agg')
-
 from matplotlib.pylab import polyfit
 
 import cli_args  as cli
@@ -12,6 +8,9 @@ from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
 
+
+# import matplotlib
+# matplotlib.use('Agg')
 
 
 class MultiObjectFilter(GenericFilter):
@@ -28,7 +27,6 @@ class MultiObjectFilter(GenericFilter):
         self.__moments = None
         self.__contours = None
         self.__height, self.__width = None, None
-        matplotlib.use('Agg')
 
     def reset_data(self):
         self.__moments = []
