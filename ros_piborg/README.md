@@ -12,6 +12,7 @@ $ rosrun ros_piborg process_image.py
 
 $ rosrun ros_piborg ros_color_picker.py -x --img_topic /raspicam_node/image/compressed --compressed 
 
+
 $ rosrun ros_piborg local_color_picker.py -x 
 
 $ rosrun ros_piborg local_single_object.py -x --bgr "174, 56, 5" --http rosborg.local

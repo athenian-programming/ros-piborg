@@ -36,7 +36,11 @@ class ColorPicker(object):
         self.__img_width = 0
         self.__img_height = 0
         self.__stopped = False
-        self.cnt = 0
+        self.__cnt = 0
+
+    @property
+    def cnt(self):
+        return self.__cnt
 
     def __read_image(self):
         try:
@@ -82,7 +86,7 @@ class ColorPicker(object):
             if self.cnt % 30 == 0:
                 logger.info(self.__bgr_text)
 
-            self.cnt += 1
+            self.__cnt += 1
             return cv2_img
 
         except BaseException as e:
@@ -96,7 +100,8 @@ class ColorPicker(object):
             if img is not None:
                 self.display_image(img)
             else:
-                time.sleep(0.1)
+                logger.info("No image")
+                time.sleep(1)
 
     def display_image(self, image):
         # Display image
