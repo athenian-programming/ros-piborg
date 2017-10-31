@@ -1,4 +1,5 @@
 import cv2
+from pylab import polyfit
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -6,9 +7,6 @@ from constants import MAXIMUM_OBJECTS_DEFAULT
 from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
-
-
-# from pylab import polyfit
 
 
 class MultiObjectFilter(GenericFilter):
@@ -71,10 +69,9 @@ class MultiObjectFilter(GenericFilter):
                 cv2.circle(image, (center_x, center_y), 4, RED, -1)
                 # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
-            # if self.draw_line and len(all_x) >= 2:
-            #    m, b = polyfit(all_x, all_y, 1)
-            #    cv2.line(image, (0, int(b)), (self.__width, int((self.__width * m) + b)), BLUE, 2)
-
+            if self.draw_line and len(all_x) >= 2:
+                m, b = polyfit(all_x, all_y, 1)
+                cv2.line(image, (0, int(b)), (self.__width, int((self.__width * m) + b)), BLUE, 2)
 
         # Draw the alignment lines
         # if self.vertical_lines:
