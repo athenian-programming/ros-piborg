@@ -27,8 +27,8 @@ class GenericFilter(object):
         self.horizontal_lines = horizontal_lines
         self.predicate = predicate
         self.__prev_x, self.__prev_y = -1, -1
-        self.height, self.width = -1, -1
-        self.contours = None
+        self.__height, self.__width = -1, -1
+        self.__contours = None
         self.contour_finder = ContourFinder(bgr_color, hsv_range, minimum_pixels)
 
     @property
@@ -50,7 +50,7 @@ class GenericFilter(object):
     @property
     def middle_inc(self):
         # The middle margin calculation is based on % of width for horizontal and vertical boundary
-        mid_x = self.width / 2
+        mid_x = self.__width / 2
         middle_pct = (float(self.tracker.middle_percent) / 100.0) / 2
         return int(mid_x * middle_pct)
 

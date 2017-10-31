@@ -1,5 +1,4 @@
 import cv2
-from pylab import polyfit
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -7,6 +6,9 @@ from constants import MAXIMUM_OBJECTS_DEFAULT
 from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
+
+
+# from pylab import polyfit
 
 
 class MultiObjectFilter(GenericFilter):
@@ -20,20 +22,20 @@ class MultiObjectFilter(GenericFilter):
                  *args, **kwargs):
         super(MultiObjectFilter, self).__init__(tracker, *args, **kwargs)
         self.__max_objects = maximum_objects
-        self.moments = None
-        self.contours = None
-        self.height, self.width = None, None
+        self.__moments = None
+        self.__contours = None
+        self.__height, self.__width = None, None
 
     def reset_data(self):
-        self.moments = []
-        self.contours = None
+        self.__moments = []
+        self.__contours = None
 
     def process_image(self, image):
         self.reset_data()
-        self.height, self.width = image.shape[:2]
-        self.contours = self.contour_finder.get_max_contours(image, count=self.__max_objects)
-        if self.contours is not None:
-            self.moments = [get_moment(i) for i in self.contours]
+        self.__height, self.__width = image.shape[:2]
+        self.__contours = self.contour_finder.get_max_contours(image, count=self.__max_objects)
+        if self.__contours is not None:
+            self.__moments = [get_moment(i) for i in self.__contours]
 
     def publish_data(self):
         # Write location if it is different from previous value written
@@ -46,16 +48,16 @@ class MultiObjectFilter(GenericFilter):
         if not self.tracker.markup_image:
             return
 
-        text = "#{0} ({1}, {2})".format(self.tracker.cnt, self.width, self.height)
+        text = "#{0} ({1}, {2})".format(self.tracker.cnt, self.__width, self.__height)
         text += " {0}%".format(self.tracker.middle_percent)
 
-        if self.contours is not None:
+        if self.__contours is not None:
             all_x = []
             all_y = []
-            for i in range(len(self.contours)):
-                box_x, box_y, box_w, box_h = cv2.boundingRect(self.contours[i])
-                center_x = self.moments[i][2]
-                center_y = self.moments[i][3]
+            for i in range(len(self.__contours)):
+                box_x, box_y, box_w, box_h = cv2.boundingRect(self.__contours[i])
+                center_x = self.__moments[i][2]
+                center_y = self.__moments[i][3]
                 all_x.append(center_x)
                 all_y.append(center_y)
 
@@ -63,15 +65,15 @@ class MultiObjectFilter(GenericFilter):
                     cv2.rectangle(image, (box_x, box_y), (box_x + box_w, box_y + box_h), BLUE, 2)
 
                 if self.draw_contour:
-                    cv2.drawContours(image, [self.contours[i]], -1, GREEN, 2)
+                    cv2.drawContours(image, [self.__contours[i]], -1, GREEN, 2)
 
                 # Draw center
                 cv2.circle(image, (center_x, center_y), 4, RED, -1)
                 # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
-            if self.draw_line and len(all_x) >= 2:
-                m, b = polyfit(all_x, all_y, 1)
-                cv2.line(image, (0, int(b)), (self.width, int((self.width * m) + b)), BLUE, 2)
+            # if self.draw_line and len(all_x) >= 2:
+            #    m, b = polyfit(all_x, all_y, 1)
+            #    cv2.line(image, (0, int(b)), (self.__width, int((self.__width * m) + b)), BLUE, 2)
 
 
         # Draw the alignment lines

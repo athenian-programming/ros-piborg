@@ -1,3 +1,4 @@
 imutils
 requests
 flask
+matplotlib

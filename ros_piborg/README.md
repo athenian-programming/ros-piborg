@@ -23,6 +23,8 @@ $ rosrun ros_piborg video_single_object.py -f ~/catkin_ws/src/ros-piborg/ros_pib
 
 $ rosrun ros_piborg video_multi_object.py -f ~/catkin_ws/src/ros-piborg/ros_piborg/images/track.m4v --bgr "93, 211, 245" --draw_box --draw_contour --http paris.local --hsv 5 --max_objects 8 --min_pixels 500 --fps 30 --width 900
 
+$ rosrun ros_piborg local_multi_object.py --bgr "93, 211, 245" --draw_box --draw_contour --http rosborg.local --hsv 5 --max_objects 8 --min_pixels 500 --width 900
+
 
 roslaunch raspicam_node camerav2_1280x960.launch
 
