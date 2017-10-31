@@ -69,7 +69,7 @@ class MultiObjectFilter(GenericFilter):
                 cv2.circle(image, (center_x, center_y), 4, RED, -1)
                 # text += " Avg: ({0}, {1})".format(self.avg_x, self.avg_y)
 
-            if self.draw_line:
+            if self.draw_line and len(all_x) >= 2:
                 m, b = polyfit(all_x, all_y, 1)
                 cv2.line(image, (0, int(b)), (self.width, int((self.width * m) + b)), BLUE, 2)
 
