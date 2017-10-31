@@ -1,4 +1,5 @@
 import cv2
+import matplotlib
 from pylab import polyfit
 
 import cli_args  as cli
@@ -7,6 +8,8 @@ from constants import MAXIMUM_OBJECTS_DEFAULT
 from generic_filter import GenericFilter
 from opencv_utils import BLUE, GREEN, RED
 from opencv_utils import get_moment
+
+matplotlib.use('Agg')
 
 
 class MultiObjectFilter(GenericFilter):
