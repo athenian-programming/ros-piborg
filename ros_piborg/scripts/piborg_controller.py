@@ -5,7 +5,7 @@ import sys
 import rospy
 from geometry_msgs.msg import Twist
 
-import PicoBorgRev
+import NewPicoBorgRev
 
 
 class PiBorg(object):
@@ -26,7 +26,7 @@ class PiBorg(object):
         self.__pbr.Init(tryOtherBus=True)
 
         if not self.__pbr.foundChip:
-            boards = PicoBorgRev.ScanForPicoBorgReverse()
+            boards = NewPicoBorgRev.ScanForPicoBorgReverse()
             if len(boards) == 0:
                 print('No PicoBorg Reverse found, check that you are attached.')
             else:
