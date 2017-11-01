@@ -5,7 +5,7 @@ import sys
 import rospy
 from geometry_msgs.msg import Twist
 
-import NewPicoBorgRev
+import PicoBorgRev
 
 
 class PiBorg(object):
@@ -21,12 +21,12 @@ class PiBorg(object):
         self.__max_angular = float(rospy.get_param('max_angular', '0.4'))
         self.__zero_slop = float(rospy.get_param('zero_slop', '0.01'))
 
-        self.__pbr = NewPicoBorgRev.PicoBorgRev()
+        self.__pbr = PicoBorgRev.PicoBorgRev()
         # self.__pbr.i2cAddress = 0x44        # Uncomment and change the value if you have changed the board address
         self.__pbr.Init(tryOtherBus=True)
 
         if not self.__pbr.foundChip:
-            boards = NewPicoBorgRev.ScanForPicoBorgReverse()
+            boards = PicoBorgRev.ScanForPicoBorgReverse()
             if len(boards) == 0:
                 print('No PicoBorg Reverse found, check that you are attached.')
             else:
