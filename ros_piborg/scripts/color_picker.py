@@ -75,7 +75,8 @@ class ColorPicker(object):
                           GREEN, 1)
 
             # Add text info
-            self.__bgr_text = "BGR value: [{0}, {1}, {2}]".format(avg_color[0], avg_color[1], avg_color[2])
+            self.__bgr_text = "#{0} BGR value: [{1}, {2}, {3}]".format(self.cnt, avg_color[0], avg_color[1],
+                                                                       avg_color[2])
             roi_text = " ROI: {0}x{1} ".format(str(self.roi_size), str(self.roi_size))
             cv2.putText(cv2_img, self.__bgr_text + roi_text, defs.TEXT_LOC, defs.TEXT_FONT, defs.TEXT_SIZE, RED, 1)
 
