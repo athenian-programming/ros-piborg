@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 import logging
+import numpy as np
 import time
 
 import cv2
 import imutils
-import numpy as np
 
 import cli_args  as cli
 import opencv_defaults as defs
@@ -108,9 +108,9 @@ class ColorPicker(object):
         # Display image
         cv2.imshow("Image", image)
 
-        print("Start wait 1")
+        # print("Start wait 1")
         key = cv2.waitKey(1) & 0xFF
-        print("End wait 1")
+        #print("End wait 1")
 
         if key == 255:
             pass
