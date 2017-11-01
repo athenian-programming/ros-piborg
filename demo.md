@@ -13,10 +13,16 @@ rosrun ros_piborg piborg_controller.py
 
 ### Color Picker
 ```bash
-rosrun ros_piborg local_color_picker.py --width 700
+rosrun ros_piborg local_color_picker.py -x --width 700
 ```
+
+## Race
+```bash
+rosrun ros_piborg video_multi_object.py -f ~/catkin_ws/src/ros-piborg/ros_piborg/images/track.m4v --bgr "93, 211, 245" --draw_line --draw_box --draw_contour --http paris.local --hsv 5 --max_objects 8 --min_pixels 500 --fps 30 --width 900
+```
+
 
 ### Multiple Targets
 ```bash
-rosrun ros_piborg local_multi_object.py --bgr "52, 205, 203" --draw_line  --draw_box --draw_contour --http rosborg --hsv 5 --max_objects 8 --min_pixels 500 --width 900
+rosrun ros_piborg local_multi_object.py -x --bgr "52, 205, 203" --draw_line  --draw_box --draw_contour --http rosborg --hsv 5 --max_objects 8 --min_pixels 500 --width 900
 ```
