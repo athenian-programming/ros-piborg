@@ -23,7 +23,7 @@ class PiBorg(object):
 
         self.__pbr = PicoBorgRev.PicoBorgRev()
         # self.__pbr.i2cAddress = 0x44        # Uncomment and change the value if you have changed the board address
-        self.__pbr.Init(tryOtherBus=False)
+        self.__pbr.Init(tryOtherBus=Trues)
 
         if not self.__pbr.foundChip:
             boards = PicoBorgRev.ScanForPicoBorgReverse()
