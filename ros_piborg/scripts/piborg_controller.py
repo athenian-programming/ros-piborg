@@ -21,7 +21,7 @@ class PiBorg(object):
         self.__max_angular = float(rospy.get_param('max_angular', '0.4'))
         self.__zero_slop = float(rospy.get_param('zero_slop', '0.01'))
 
-        self.__pbr = PicoBorgRev.PicoBorgRev()
+        self.__pbr = NewPicoBorgRev.PicoBorgRev()
         # self.__pbr.i2cAddress = 0x44        # Uncomment and change the value if you have changed the board address
         self.__pbr.Init(tryOtherBus=True)
 
