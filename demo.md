@@ -1,3 +1,14 @@
+### Joystick Teleop
+```bash
+# On Ubuntu
+roslaunch teleop_twist_joy teleop.launch joy_dev:=/dev/input/js0 joy_config:=xd3 enable_turbo_button:=1
+```
+
+```bash
+# On PiBiorg
+    rosrun ros_piborg piborg_controller.py
+```
+
 ### Color Picker
 ```bash
 rosrun ros_piborg local_color_picker.py --width 700
