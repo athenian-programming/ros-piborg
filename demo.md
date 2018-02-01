@@ -27,5 +27,5 @@ rosrun ros_piborg video_multi_object.py -f ~/catkin_ws/src/ros-piborg/ros_piborg
 ### Multiple Targets
 ```bash
 # On Raspi with ssh -X
-rosrun ros_piborg local_multi_object.py -x --bgr "52, 205, 203" --draw_line  --draw_box --draw_contour --hsv 5 --max_objects 8 --min_pixels 500 --width 800 --http rosborg.local
+**rosrun ros_piborg local_multi_object.py -x --bgr "52, 205, 203" --draw_line  --draw_box --draw_contour --hsv 5 --max_objects 8 --min_pixels 500 --width 800 --http rosborg.local**
 ```
