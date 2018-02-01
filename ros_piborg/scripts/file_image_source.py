@@ -1,6 +1,6 @@
+import arc852.cli_args  as cli
 import cv2
 
-import cli_args  as cli
 from generic_image_source import GenericImageSource
 
 

@@ -2,11 +2,11 @@ import logging
 from threading import Condition
 from threading import Thread
 
+import arc852.cli_args  as cli
 import cv2
 import imutils
 import rospy
 
-import cli_args  as cli
 from generic_image_source import GenericImageSource
 
 logger = logging.getLogger(__name__)

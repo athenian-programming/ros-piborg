@@ -2,13 +2,14 @@
 
 import logging
 
-import cli_args  as cli
-from cli_args import LOG_LEVEL
-from cli_args import setup_cli_args
-from color_picker import ColorPicker
-from constants import FILENAME, WIDTH, FLIP_X, FLIP_Y
+import arc852.cli_args  as cli
+from arc852.cli_args import LOG_LEVEL
+from arc852.cli_args import setup_cli_args
+from arc852.color_picker import ColorPicker
+from arc852.constants import FILENAME, WIDTH, FLIP_X, FLIP_Y
+from arc852.utils import setup_logging
+
 from file_image_source import FileImageSource
-from utils import setup_logging
 
 logger = logging.getLogger(__name__)
 

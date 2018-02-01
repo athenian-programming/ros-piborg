@@ -1,10 +1,10 @@
 from threading import Condition
 
+import arc852.cli_args  as cli
 import rospy
 from cv_bridge import CvBridge
 from sensor_msgs.msg import CompressedImage, Image
 
-import cli_args  as cli
 from generic_image_source import GenericImageSource
 
 

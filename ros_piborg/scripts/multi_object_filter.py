@@ -1,16 +1,16 @@
+import arc852.cli_args  as cli
+import arc852.opencv_defaults as defs
 import cv2
+from arc852.constants import MAXIMUM_OBJECTS_DEFAULT
+from arc852.opencv_utils import BLUE, GREEN, RED
+from arc852.opencv_utils import get_moment
 from matplotlib.pylab import polyfit
 
-import cli_args  as cli
-import opencv_defaults as defs
-from constants import MAXIMUM_OBJECTS_DEFAULT
 from generic_filter import GenericFilter
-from opencv_utils import BLUE, GREEN, RED
-from opencv_utils import get_moment
 
 
 class MultiObjectFilter(GenericFilter):
-    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels,
+    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.minimum_pixels,
             cli.draw_line, cli.draw_contour, cli.draw_box, cli.max_objects]
 
     def __init__(self,

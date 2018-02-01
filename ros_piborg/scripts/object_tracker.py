@@ -1,13 +1,12 @@
 import logging
 import time
 
+import arc852.cli_args  as cli
+import arc852.opencv_utils as utils
 import cv2
 import imutils
 import numpy as np
 import rospy
-
-import cli_args  as cli
-import opencv_utils as utils
 
 logger = logging.getLogger(__name__)
 
@@ -160,4 +159,3 @@ class ObjectTracker(object):
             utils.write_image(image, log_info=True)
         elif key == ord("q"):
             self.__stopped = True
-

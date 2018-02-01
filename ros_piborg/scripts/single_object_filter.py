@@ -1,18 +1,18 @@
+import arc852.cli_args  as cli
+import arc852.opencv_defaults as defs
 import cv2
 import rospy
+from arc852.opencv_utils import BLUE, GREEN, RED
+from arc852.opencv_utils import get_moment
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Vector3
 
-import cli_args  as cli
-import opencv_defaults as defs
 from generic_filter import GenericFilter
-from opencv_utils import BLUE, GREEN, RED
-from opencv_utils import get_moment
 
 
 class SingleObjectFilter(GenericFilter):
-    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.min_pixels, cli.draw_contour,
-            cli.draw_box, cli.vert_lines, cli.horiz_lines]
+    args = [cli.so_topic, cli.bgr, cli.hsv_range, cli.minimum_pixels, cli.draw_contour,
+            cli.draw_box, cli.vertical_lines, cli.horizontal_lines]
 
     def __init__(self, tracker, so_topic, *args, **kwargs):
         super(SingleObjectFilter, self).__init__(tracker, *args, **kwargs)
