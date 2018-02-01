@@ -13,10 +13,10 @@ from arc852.constants import MASK_X, MASK_Y, BGR_COLOR
 from arc852.constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, FILENAME, FPS, HTTP_HOST, SO_TOPIC
 from arc852.image_server import ImageServer
 from arc852.utils import setup_logging
+from arc852.video_image_source import VideoImageSource
 
 from object_tracker import ObjectTracker
 from single_object_filter import SingleObjectFilter
-from video_image_source import VideoImageSource
 
 logger = logging.getLogger(__name__)
 

@@ -2,12 +2,11 @@ import arc852.cli_args  as cli
 import arc852.opencv_defaults as defs
 import cv2
 import rospy
+from arc852.generic_filter import GenericFilter
 from arc852.opencv_utils import BLUE, GREEN, RED
 from arc852.opencv_utils import get_moment
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Vector3
-
-from generic_filter import GenericFilter
 
 
 class SingleObjectFilter(GenericFilter):

@@ -2,11 +2,10 @@ import arc852.cli_args  as cli
 import arc852.opencv_defaults as defs
 import cv2
 from arc852.constants import MAXIMUM_OBJECTS_DEFAULT
+from arc852.generic_filter import GenericFilter
 from arc852.opencv_utils import BLUE, GREEN, RED
 from arc852.opencv_utils import get_moment
 from matplotlib.pylab import polyfit
-
-from generic_filter import GenericFilter
 
 
 class MultiObjectFilter(GenericFilter):

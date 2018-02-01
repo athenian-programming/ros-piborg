@@ -4,6 +4,7 @@ import logging
 
 import arc852.cli_args  as cli
 import rospy
+from arc852.camera_image_source import CameraImageSource
 from arc852.cli_args import LOG_LEVEL
 from arc852.cli_args import setup_cli_args
 from arc852.constants import DISPLAY, WIDTH, MIDDLE_PERCENT
@@ -14,7 +15,6 @@ from arc852.constants import USB_CAMERA, USB_PORT, MASK_X, MASK_Y, BGR_COLOR
 from arc852.image_server import ImageServer
 from arc852.utils import setup_logging
 
-from camera_image_source import CameraImageSource
 from multi_object_filter import MultiObjectFilter
 from object_tracker import ObjectTracker
 

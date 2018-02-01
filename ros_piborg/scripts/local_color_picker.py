@@ -3,13 +3,12 @@
 import logging
 
 import arc852.cli_args  as cli
+from arc852.camera_image_source import CameraImageSource
 from arc852.cli_args import LOG_LEVEL
 from arc852.cli_args import setup_cli_args
 from arc852.color_picker import ColorPicker
 from arc852.constants import USB_CAMERA, USB_PORT, WIDTH, FLIP_X, FLIP_Y
 from arc852.utils import setup_logging
-
-from camera_image_source import CameraImageSource
 
 logger = logging.getLogger(__name__)
 
