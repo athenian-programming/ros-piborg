@@ -45,7 +45,7 @@ def update_info(msg):
         print(e)
 
 
-if __name__ == '__main__':
+def main():
     rospy.init_node('process_image')
 
     # Instantiate CvBridge
@@ -60,3 +60,7 @@ if __name__ == '__main__':
     info_pub = rospy.Publisher('/test_img/camera_info', CameraInfo, queue_size=5)
 
     rospy.spin()
+
+
+if __name__ == '__main__':
+    main()

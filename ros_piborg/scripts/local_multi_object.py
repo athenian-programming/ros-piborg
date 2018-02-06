@@ -20,7 +20,8 @@ from multi_object_filter import MultiObjectFilter
 
 logger = logging.getLogger(__name__)
 
-if __name__ == "__main__":
+
+def main():
     # Parse CLI args
     args = setup_cli_args(CameraImageSource.args,
                           ImageServer.args, cli.camera_name_optional,
@@ -76,3 +77,7 @@ if __name__ == "__main__":
         image_source.stop()
 
     rospy.loginfo("Exiting")
+
+
+if __name__ == "__main__":
+    main()

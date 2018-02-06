@@ -20,7 +20,8 @@ from single_object_filter import SingleObjectFilter
 
 logger = logging.getLogger(__name__)
 
-if __name__ == "__main__":
+
+def main():
     # Parse CLI args
     args = setup_cli_args(CameraImageSource.args,
                           ImageServer.args, cli.camera_name_optional,
@@ -74,3 +75,7 @@ if __name__ == "__main__":
         image_source.stop()
 
     logger.info("Exiting")
+
+
+if __name__ == "__main__":
+    main()

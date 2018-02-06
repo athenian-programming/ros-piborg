@@ -13,7 +13,8 @@ from arc852.utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
-if __name__ == "__main__":
+
+def main():
     # Parse CLI args
     args = setup_cli_args(RosImageSource.args, ColorPicker.args, cli.log_level)
 
@@ -39,4 +40,6 @@ if __name__ == "__main__":
     finally:
         image_source.stop()
 
-    logger = logging.getLogger(__name__)
+
+if __name__ == "__main__":
+    main()

@@ -96,7 +96,7 @@ class PiBorg(object):
         self.__pbr.MotorsOff()
 
 
-if __name__ == '__main__':
+def main():
     rospy.init_node('piborg-controller')
 
     pb = PiBorg()
@@ -106,3 +106,7 @@ if __name__ == '__main__':
         rospy.spin()
     finally:
         pb.stop()
+
+
+if __name__ == '__main__':
+    main()

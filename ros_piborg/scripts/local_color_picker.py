@@ -12,7 +12,8 @@ from arc852.utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
-if __name__ == "__main__":
+
+def main():
     # Parse CLI args
     args = setup_cli_args(CameraImageSource.args, ColorPicker.args, cli.log_level)
 
@@ -34,3 +35,7 @@ if __name__ == "__main__":
         image_source.stop()
 
     logger.info("Exiting")
+
+
+if __name__ == "__main__":
+    main()
