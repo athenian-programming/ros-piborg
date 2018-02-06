@@ -8,7 +8,7 @@ from arc852.cli_args import LOG_LEVEL
 from arc852.cli_args import setup_cli_args
 from arc852.constants import DISPLAY, WIDTH, MIDDLE_PERCENT
 from arc852.constants import DRAW_LINE, DRAW_CONTOUR, DRAW_BOX, VERTICAL_LINES, HORIZONTAL_LINES
-from arc852.constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, HTTP_FILE, HTTP_VERBOSE
+from arc852.constants import FLIP_X, FLIP_Y, HTTP_DELAY_SECS, TEMPLATE_FILE, HTTP_VERBOSE
 from arc852.constants import MASK_X, MASK_Y, BGR_COLOR
 from arc852.constants import MINIMUM_PIXELS, HSV_RANGE, CAMERA_NAME, FILENAME, FPS, HTTP_HOST, SO_TOPIC
 from arc852.image_server import ImageServer
@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     image_source = VideoImageSource(filename=args[FILENAME], fps_rate=args[FPS])
 
-    image_server = ImageServer(http_file=args[HTTP_FILE],
+    image_server = ImageServer(template_file=args[TEMPLATE_FILE],
                                camera_name=args[CAMERA_NAME],
                                http_host=args[HTTP_HOST],
                                http_delay_secs=args[HTTP_DELAY_SECS],
