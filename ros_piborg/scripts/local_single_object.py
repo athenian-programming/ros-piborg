@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 def main():
     # Parse CLI args
     args = setup_cli_args(CameraImageSource.args,
-                          ImageServer.args, cli.camera_name_optional,
+                          ImageServer.args,
+                          cli.camera_name_optional,
                           SingleObjectFilter.args,
                           ObjectTracker.args,
                           cli.log_level)
